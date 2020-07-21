@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser'); 
 const expressSession = require('express-session'); 
 const dotenv = require('dotenv');
-//const mariadbConnection = require('./DataBaseInfo/mariadb'); 
 const app= express(); 
 dotenv.config(); 
 
@@ -17,6 +16,7 @@ app.use(cors({
     origin:true,
     credentials:true, 
 })); //프론트 백엔드간 쿠키주고 받기 위함, 
+
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true})); 
 app.use(cookieParser(process.env.COOKIE_SECRET));

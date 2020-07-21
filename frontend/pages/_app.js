@@ -9,7 +9,7 @@ import  '../CSS/antdMobile.css';
 
 
 
-import withRedux from 'next-redux-wrapper';
+import withRedux , {createWrapper} from 'next-redux-wrapper';
 import { createStore, compose, applyMiddleware } from 'redux';
 import reducer  from '../reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -74,7 +74,5 @@ const configureStore = (initialState, options) => {
 
 }
   
-
-
-
-export default withRedux(configureStore)(Project01_TodoList); 
+const wrapper = createWrapper(configureStore, {debug: false}); 
+export default wrapper.withRedux(Project01_TodoList); 

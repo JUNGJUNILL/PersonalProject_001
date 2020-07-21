@@ -9,15 +9,14 @@ from '../reducers/emp';
 
 
 
-function APIempList(){
-    return axios.post('/emp',{},{withCredentials:true})
+function APIempList(data){
+    return axios.post('/emp',{data},{withCredentials:true})
 }
 
 function* sagaEmpList(action){
 
     try{
-      const result = yield call(APIempList); 
-      console.log('empList' , result.data); 
+      const result = yield call(APIempList,action.data); 
       yield  put({
             type:EMP_LIST_SUCCESS, 
             data: result.data, 
@@ -35,8 +34,7 @@ function* sagaEmpList(action){
 }
 
 function* watchempList(){
-    console.log('watchempList'); 
-    yield takeEvery(EMP_LIST_REQUEST,sagaEmpList); 
+    yield takeLatest(EMP_LIST_REQUEST,sagaEmpList); 
 }
 
 export default function* empListSaga(){

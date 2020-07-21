@@ -22,6 +22,8 @@ const reducer = (state = initialState, action) =>{
             }
 
             case EMP_LIST_SUCCESS: {
+                draft.emplist.length=0; 
+                //배열 초기화
                 action.data.forEach((v)=>{
                     draft.emplist.push(v); 
                 }); 

@@ -13,9 +13,14 @@ npm i prop-types
 
 //--------------리덕스 
  npm i redux react-redux
+            https://redux.js.org/
+            
  npm i next-redux-wrapper
              "next-redux-wrapper": "^6.0.2", 이 버전에서는 _app.js에서 <Provider store={store}></Provider> 해줄 필요가 없다. 
              NPM 사이트 READ.ME 확인 , 없으면 깃허브 들어가서 사용법을 상세하게 읽어보아야 한다. 
+             https://github.com/kirill-konshin/next-redux-wrapper#custom-serialization-and-deserialization
+
+
  npm install -D redux-devtools-extension
  npm i redux-saga
 
