@@ -4,10 +4,10 @@ import {COUNT_PLUS_REQUEST,COUNT_PLUS_SUCCESS, COUNT_PLUS_FAILURE, COUNT_MINUS_R
 
 
 
+
 function* sagaPlus(action){
 
     try{
-        console.log('action.type 사가...' , action.type); 
       yield  put({
             type:COUNT_PLUS_SUCCESS, 
             data: 1, 

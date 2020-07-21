@@ -37,6 +37,7 @@ const AppLayOut = ({children}) =>{
                     <li><Link href={'/'} ><a>Home</a></Link></li>
                     <li><Link href={'/about'} ><a>About</a></Link></li>
                     <li><Link href={'/count'} ><a>Count</a></Link></li>
+                    <li><Link href={'/emp'} ><a>emp</a></Link></li>
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

@@ -1,0 +1,12 @@
+npm i express 
+npm i axios 
+npm i bcrypt
+npm i cookie-parser
+npm i express-session
+npm i dotenv
+npm i cors
+npm i helmet hpp --보안관련
+npm i morgan 
+npm i multer
+npm i nodemon
+npm install --save mariadb

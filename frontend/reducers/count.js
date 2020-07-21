@@ -1,3 +1,6 @@
+import produce from 'immer'
+
+
 export const initialState = {
 
         number : 0,
@@ -24,33 +27,30 @@ export const COUNT_MINUS_FAILURE = 'COUNT_MINUS_FAILURE';
 
 const reducer = (state = initialState, action) =>{
 
+    return produce(state,(draft)=>{
 
-    switch (action.type) {
-        
-        case COUNT_PLUS_REQUEST: {
-            return {
-                ...state, 
+        switch (action.type) {
+            
+            case COUNT_PLUS_REQUEST: {
+                break; 
             }
+
+            case COUNT_PLUS_SUCCESS: {
+                draft.number = state.number + action.data;
+                break; 
+                
+            }
+                
+            case COUNT_MINUS_SUCCESS:
+                draft.number = state.number - action.data; 
+                break; 
+
+                
+            default :  break; 
+             
         }
 
-        case COUNT_PLUS_SUCCESS: {
-            return { 
-                ...state, 
-                number : state.number + action.data, 
-            }
-            
-        }
-            
-        case COUNT_MINUS_SUCCESS:
-            return {
-                ...state, 
-                number : state.number -action.data, 
-            }
-        default :
-            return {
-                ...state
-            }; 
-    }
+    })
 
 }; 
 

@@ -19,4 +19,8 @@ npm i prop-types
  npm install -D redux-devtools-extension
  npm i redux-saga
 
+ npm i immer --불변성 지랄 안해도 되는 패키지, 
+             --https://immerjs.github.io/immer/docs/produce 
+
+npm i axios
 
