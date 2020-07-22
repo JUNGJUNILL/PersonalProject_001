@@ -1,5 +1,6 @@
-import React, { useCallback,useEffect } from 'react'
+import React, { useCallback,useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import Pagenation from '../utilComponent/Pagenation'
 import { Pagination } from 'antd';
 import 
     {EMP_LIST_REQUEST,} 
@@ -13,7 +14,11 @@ const Emp = () =>{
     const {emplist}    = useSelector(state => state.emp); 
                                  //store의 state를 불러오는 hook 
                                  //store의 state 중에서 count의 state를 불러온다.
+    const [nowPage] = useState(0); 
+    const [postsPerPage] = useState(5); 
+    const [groupPage , setGroupPage] = useState(0); 
 
+ 
     const getEmplist = useCallback(()=>{
           
     },[])
@@ -21,12 +26,48 @@ const Emp = () =>{
     useEffect(()=>{
         dispatch({
             type:EMP_LIST_REQUEST, 
-            data:{name:'',job:'',currentPage:1,maxPage:4}, 
+            data:{name:'',
+                  job:'',
+                  currentPage:nowPage,
+                  maxPage:postsPerPage
+                 }, 
         })
-      },[])
+      },[]); 
+
+
+     // const currentPosts = emplist.slice(indexOfFirstPost,indexOfLastPost); //0~5
+      /*
+      1 페이지 = 1*5 =5 
+                5-5 =0 
+                0~5 
+      2 페이지 = 2*5=10 
+                10-5=5 
+                5~10
+      3 페이지 = 3*5=15 
+      */
     
+
+      const pagenate =useCallback((pageNumber)=>{
+
+        const indexOfLastPost = pageNumber * postsPerPage;   //10
+        const indexOfFirstPost = indexOfLastPost - postsPerPage; //10-5 = 5 
+        if(emplist.length < indexOfLastPost - postsPerPage){
+          setGroupPage(pageNumber); 
+        }
+
+        dispatch({
+          type:EMP_LIST_REQUEST, 
+          data:{name:'',
+                job:'',
+                currentPage:indexOfFirstPost,
+                maxPage:postsPerPage
+               }, 
+      })
+
+
+      },[nowPage]); 
                                  
-                          //        <button onClick={getEmplist}>검색</button>       
+                              
     return (
         <>
          <div className='divTable' style={{marginTop:'3%'}}>
@@ -41,7 +82,7 @@ const Emp = () =>{
                      <div className='divTableCell'>인센</div>
                      <div className='divTableCell'>부서번호</div>
            </div>
-            {emplist.map((v,i)=>(
+            {emplist && emplist.map((v,i)=>(
                 <div className='divTableRow' key={i}>
                      <div className='divTableCell'>{v.EMPNO}</div>
                      <div className='divTableCell'>{v.ENAME}</div>
@@ -55,9 +96,7 @@ const Emp = () =>{
             ))}
             </div>
          </div>
-         <div>
-         <Pagination defaultCurrent={1} total={50} />
-         </div>
+        <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={groupPage}/>
         </>
     )
 
