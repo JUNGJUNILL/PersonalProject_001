@@ -14,11 +14,11 @@ const Emp = () =>{
     const {emplist}    = useSelector(state => state.emp); 
                                  //store의 state를 불러오는 hook 
                                  //store의 state 중에서 count의 state를 불러온다.
-    const [nowPage] = useState(0); 
-    const [postsPerPage] = useState(5); 
-    const [groupPage , setGroupPage] = useState(0); 
+    const [nowPage,setNowPage] = useState(0);       //현재 페이지
+    const [postsPerPage] = useState(2);             //한 페이지당 list 수 
+    const [groupPage , setGroupPage] = useState(5); //페이징 그룹 당 수  1~5 , 6~10 , 11~15
+    const [nowGroupPageArray,setNowGroupPageArray] =useState([]);  
 
- 
     const getEmplist = useCallback(()=>{
           
     },[])
@@ -47,13 +47,15 @@ const Emp = () =>{
       */
     
 
-      const pagenate =useCallback((pageNumber)=>{
-
-        const indexOfLastPost = pageNumber * postsPerPage;   //10
-        const indexOfFirstPost = indexOfLastPost - postsPerPage; //10-5 = 5 
-        if(emplist.length < indexOfLastPost - postsPerPage){
-          setGroupPage(pageNumber); 
-        }
+      const pagenate =useCallback((pageNumber, groupPageArray,flag)=>{
+          
+          setNowPage(pageNumber); 
+          nowGroupPageArray.length=0; 
+          setNowGroupPageArray(nowGroupPageArray.concat(groupPageArray));
+              
+       
+          const indexOfLastPost = pageNumber * postsPerPage;   
+          const indexOfFirstPost = indexOfLastPost - postsPerPage;  
 
         dispatch({
           type:EMP_LIST_REQUEST, 
@@ -62,10 +64,10 @@ const Emp = () =>{
                 currentPage:indexOfFirstPost,
                 maxPage:postsPerPage
                }, 
-      })
+      });
 
 
-      },[nowPage]); 
+      },[nowPage,nowGroupPageArray]); 
                                  
                               
     return (
@@ -96,7 +98,7 @@ const Emp = () =>{
             ))}
             </div>
          </div>
-        <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={groupPage}/>
+        <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray}/>
         </>
     )
 
