@@ -32,12 +32,12 @@ const AppLayOut = ({children}) =>{
 
             <Row>
                 <Col xs={24}> 
-                <ul>
-                    <li onClick={catergoriList}>메뉴</li>
-                    <li><Link href={'/'} ><a>Home</a></Link></li>
-                    <li><Link href={'/about'} ><a>About</a></Link></li>
-                    <li><Link href={'/count'} ><a>Count</a></Link></li>
-                    <li><Link href={'/emp'} ><a>emp</a></Link></li>
+                <ul className="navul">
+                    <li className="navli" onClick={catergoriList}>메뉴</li>
+                    <li className="navli"><Link href={'/'} ><a>Home</a></Link></li>
+                    <li className="navli"><Link href={'/about'} ><a>About</a></Link></li>
+                    <li className="navli"><Link href={'/count'} ><a>Count</a></Link></li>
+                    <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

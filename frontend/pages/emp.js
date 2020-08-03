@@ -14,10 +14,11 @@ const Emp = () =>{
     const {emplist}    = useSelector(state => state.emp); 
                                  //store의 state를 불러오는 hook 
                                  //store의 state 중에서 count의 state를 불러온다.
-    const [nowPage,setNowPage] = useState(0);       //현재 페이지
-    const [postsPerPage] = useState(2);             //한 페이지당 list 수 
-    const [groupPage , setGroupPage] = useState(5); //페이징 그룹 당 수  1~5 , 6~10 , 11~15
-    const [nowGroupPageArray,setNowGroupPageArray] =useState([]);  
+
+    const [nowPage,setNowPage] = useState(0);                       //현재 페이지
+    const [postsPerPage] = useState(5);                             //한 페이지당 list 수 
+    const [groupPage , setGroupPage] = useState(5);                 //페이징 그룹 당 수  1~5 , 6~10 , 11~15 ...
+    const [nowGroupPageArray,setNowGroupPageArray] =useState([]);  //현제 페이징 그룹 배열
 
     const getEmplist = useCallback(()=>{
           
@@ -47,13 +48,10 @@ const Emp = () =>{
       */
     
 
-      const pagenate =useCallback((pageNumber, groupPageArray,flag)=>{
-          
+      const pagenate =useCallback((pageNumber, groupPageArray)=>{
           setNowPage(pageNumber); 
           nowGroupPageArray.length=0; 
           setNowGroupPageArray(nowGroupPageArray.concat(groupPageArray));
-              
-       
           const indexOfLastPost = pageNumber * postsPerPage;   
           const indexOfFirstPost = indexOfLastPost - postsPerPage;  
 
@@ -98,7 +96,7 @@ const Emp = () =>{
             ))}
             </div>
          </div>
-        <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray}/>
+        <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray} />
         </>
     )
 

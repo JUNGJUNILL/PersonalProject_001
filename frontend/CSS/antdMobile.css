@@ -1,5 +1,5 @@
-
-ul {
+/*navBar*/
+.navul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@ ul {
 
 
 
-li {
+.navli {
   float: left;
   display: block;
   color: #666;
@@ -18,8 +18,11 @@ li {
   padding: 14px 16px;
   text-decoration: none;
 }
+/*navBar*/
 
 
+
+/*pagination*/
 li a:hover:not(.active) {
   background-color: #ddd;
 }
@@ -28,6 +31,46 @@ li a.active {
   color: white;
   background-color: #4CAF50;
 }
+
+ul.pagination {
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+  margin: 0 ;
+    background-color: #f3f3f3;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+}
+
+ul.pagination li a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+
+/*페이지 네이션 중앙정렬 div*/
+.paginationDiv {
+
+	width: 100%;
+	margin: 0 auto;
+  text-align: center;
+  
+}
+/*pagination
+http://www.daks.me/css3_pagination.php
+http://www.daks.me/try.php?filename=trycss3_pagination5.php
+*/
 
 
 
