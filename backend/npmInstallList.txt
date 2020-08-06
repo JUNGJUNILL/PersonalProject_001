@@ -15,3 +15,4 @@ npm install --save mariadb
 
 npm i jsonwebtoken 
 npm i passport
+npm i passport-local

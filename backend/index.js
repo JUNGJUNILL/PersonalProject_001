@@ -5,8 +5,10 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser'); 
 const expressSession = require('express-session'); 
 const dotenv = require('dotenv');
+const passportConfig = require('./passport'); 
 const app= express(); 
 dotenv.config(); 
+passportConfig(); 
 
 
 
