@@ -41,12 +41,14 @@ const Project01_TodoList = ({Component}) =>{
 
 Project01_TodoList.getInitialProps = async (context)=>{
                                             //▲ next에서 제공해줌
-const { ctx,Component } = context; 
-let pageProps ={}; 
-if(Component.getInitialProps){
-pageProps =  await Component.getInitialProps(ctx); 
-}
-return {pageProps}; 
+  const { ctx,Component } = context; 
+  let pageProps ={}; 
+
+  if(Component.getInitialProps){
+  pageProps =  await Component.getInitialProps(ctx); 
+  }
+  
+  return {pageProps}; 
 
 }
 

@@ -38,6 +38,8 @@ const AppLayOut = ({children}) =>{
                     <li className="navli"><Link href={'/about'} ><a>About</a></Link></li>
                     <li className="navli"><Link href={'/count'} ><a>Count</a></Link></li>
                     <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>
+                    <li className="navli"><Link href={'/join'} ><a>회원가입</a></Link></li>
+                    <li className="navli"><Link href={'/login'} ><a>로그인</a></Link></li>
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev" : "nodemon app"
+    "dev": "nodemon app"
   },
   "author": "jji",
   "license": "MIT",
@@ -18,9 +18,11 @@
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
     "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.4.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1"
   }
 }

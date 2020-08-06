@@ -1,3 +1,4 @@
+var createError = require('http-errors');
 const express = require('express'); 
 const cors = require('cors'); 
 const morgan = require('morgan'); 
@@ -10,6 +11,7 @@ dotenv.config();
 
 
 const empAPIRouter = require('./routes/emp'); 
+const authAPIRouter = require('./routes/auth'); 
 
 app.use(morgan('dev')); 
 app.use(cors({
@@ -34,6 +36,13 @@ app.use(expressSession({
 }));
 
 app.use('/api/emp',empAPIRouter); 
+app.use('/api/auth',authAPIRouter); 
+
+
+//에러
+// app.use(function(e, req, res, next) {
+//     console.log('에러발생했어!!', e); 
+//   });
 
 app.listen(3095,()=>{
     console.log('server is Runnig in 3095 port'); 

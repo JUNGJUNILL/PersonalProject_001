@@ -20,8 +20,7 @@ function* sagaEmpList(action){
  
       yield  put({
             type:EMP_LIST_SUCCESS, 
-            data: result.data, 
-        })
+        });
 
     }catch(e){
 

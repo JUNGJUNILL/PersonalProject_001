@@ -10,3 +10,8 @@ npm i morgan
 npm i multer
 npm i nodemon
 npm install --save mariadb
+
+/*사용자 정보 관련*/
+
+npm i jsonwebtoken 
+npm i passport

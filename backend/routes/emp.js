@@ -6,8 +6,8 @@ const pool = require('../DataBaseInfo');
 
 router.post('/', async (req,res,next)=>{
 
-    try{
-        //파라메터
+    try{    
+        
         const {name , job, currentPage, maxPage}= req.body.data;   
         let stringQuery = 'CALL US_SELECT_emp'; 
             stringQuery =stringQuery.concat(`('${name}',`);
@@ -17,7 +17,7 @@ router.post('/', async (req,res,next)=>{
         const emplist = await pool.query(stringQuery); 
 
         res.json(emplist[0]); 
-        console.log(emplist[1][0], stringQuery); 
+        console.log(emplist[1][0], stringQuery,req.cookies['COOKIE_SECRET']); 
 
     }catch(e){
         console.log(e); 

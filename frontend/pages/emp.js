@@ -1,7 +1,6 @@
 import React, { useCallback,useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Pagenation from '../utilComponent/Pagenation'
-import { Pagination } from 'antd';
 import 
     {EMP_LIST_REQUEST,} 
 from '../reducers/emp'; 

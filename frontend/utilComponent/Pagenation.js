@@ -20,7 +20,6 @@ const Pagenation = ({pagenate,dataLength,postsPerPage,nowPage,groupPage,groupPag
     
     //앞으로 그룹 이동
     }else if(((nowPage % groupPage ===1)) && (nowPage !== 1)){
-            console.log('앞으로 그룹 이동')
             pageNumers.length = 0; 
             for(let i=nowPage-1; i<(nowPage-1)+groupPage; i++ ){
             pageNumers.push(i); 
@@ -28,14 +27,13 @@ const Pagenation = ({pagenate,dataLength,postsPerPage,nowPage,groupPage,groupPag
 
     //뒤로 그룹 이동
     }else if((groupPageArray[0] === nowPage)){
-             console.log('뒤로 그룹 이동');
              pageNumers.length = 0; 
              for(let i=0; i<groupPageArray.length; i++){
                 pageNumers.push(groupPageArray[i]-groupPage); 
              }
-
+    
+    //숫자 클릭 
     }else{
-           console.log('번호 클릭'); 
            pageNumers.length=0; 
            for(let i=0; i< groupPageArray.length; i++){
                pageNumers.push(groupPageArray[i]); 
@@ -50,7 +48,7 @@ const Pagenation = ({pagenate,dataLength,postsPerPage,nowPage,groupPage,groupPag
                     <li  style={{display: nowPage === 1 || nowPage === 0  ? "none" : ""}}><Link href={'#'}><a onClick={()=>pagenate(nowPage-1,pageNumers)}>◀</a></Link></li>
                     {pageNumers.map((v,i,array)=>(
                         <li key={v}   style={{display : (isInVisible===true) && (v >=nowPage) ? "none" : "" }}>
-                            <li><Link href={'#'}><a className={nowPage === v+1 ?  "active" : ""} onClick={()=>pagenate(v+1,array)}>{v+1}</a></Link></li>
+                            <li><Link href={'#'}><a className={(nowPage === 0 && nowPage === v) || (nowPage === v+1) ?  "active" : ""} onClick={()=>pagenate(v+1,array)}>{v+1}</a></Link></li>
                         </li>
                     ))}
                     <li style={{display :isInVisible===true ? "none" : ""}}><Link href={'#'}><a onClick={()=>pagenate(nowPage+1,pageNumers)}>▶</a></Link></li>

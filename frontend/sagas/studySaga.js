@@ -25,7 +25,6 @@ function* sagaPlus(action){
 }
 
 function* watchSagaPlus(){
-    console.log('watchSagaPlus'); 
     yield takeEvery(COUNT_PLUS_REQUEST,sagaPlus); 
 }
 
@@ -53,7 +52,6 @@ function* sagaMinus(action){
 }
 
 function* watchMinus(){
-    console.log('watchMinus'); 
     yield takeEvery(COUNT_MINUS_REQUEST,sagaMinus); 
 }
 
