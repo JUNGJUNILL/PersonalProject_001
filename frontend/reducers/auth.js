@@ -75,9 +75,7 @@ const reducer = (state = initialState, action) =>{
             }
 //------------------------------------------------
 
-            default : {
-                break;
-            }
+            default :       break;
     
              
         }

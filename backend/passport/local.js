@@ -16,11 +16,11 @@ module.exports = () =>{
         try{
              
 
-            let stringQuery = 'CALL US_SELECT_getUserInfo'; 
-            stringQuery = stringQuery.concat(`('${userId})'`);
-            const userInfo = await pool.query(stringQuery); 
-            console.log('userInfo ==> ' , userInfo); 
-
+        //    let stringQuery = 'CALL US_SELECT_getUserInfo'; 
+          //  stringQuery = stringQuery.concat(`('${userId})'`);
+          //  const userInfo = await pool.query(stringQuery); 
+       //     console.log('userInfo ==> ' , userInfo); 
+       const userInfo = "";//await pool.query(stringQuery);
             //아이디가 없어
             if(!userInfo){
                 return done(null,false,{reason:'존재하지 않는 사용자 입니다.'}); 

@@ -17,9 +17,10 @@ function* sagaEmpList(action){
 
     try{
       const result = yield call(APIempList,action.data); 
- 
+        console.log(result); 
       yield  put({
             type:EMP_LIST_SUCCESS, 
+            data:result.data,
         });
 
     }catch(e){
