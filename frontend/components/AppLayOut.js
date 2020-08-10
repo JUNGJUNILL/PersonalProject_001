@@ -3,12 +3,25 @@ import {useCallback,useState,useEffect, useRef} from 'react'
 import Link from 'next/link'
 import {Row,Col} from  'antd'; 
 import { Result, Icon, WhiteSpace } from 'antd-mobile';
+import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router'; 
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
 
 
 const AppLayOut = ({children}) =>{
     const dummyList = ['카테코리01','카테코리02','카테코리03','카테코리04','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05']; 
+
+    const {userInfo} = useSelector(state=> state.auth); 
+
+    useEffect(()=>{
+        console.log('userInfo==>' , userInfo); 
+        if(userInfo){
+         //   alert(joined); 
+            Router.push('/'); 
+        }
+        
+    },[userInfo])
 
     const [isClicked,setIsClicked] = useState(false); 
     const inputEl = useRef(null); 
@@ -18,6 +31,8 @@ const AppLayOut = ({children}) =>{
         alert(test); 
 
     },[])
+
+    
 
     const catergoriList = () =>{
           setIsClicked(!isClicked);
@@ -32,14 +47,16 @@ const AppLayOut = ({children}) =>{
 
             <Row>
                 <Col xs={24}> 
+
                 <ul className="navul">
                     <li className="navli" onClick={catergoriList}>메뉴</li>
                     <li className="navli"><Link href={'/'} ><a>Home</a></Link></li>
                     <li className="navli"><Link href={'/about'} ><a>About</a></Link></li>
                     <li className="navli"><Link href={'/count'} ><a>Count</a></Link></li>
-                    <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>
-                    <li className="navli"><Link href={'/join'} ><a>회원가입</a></Link></li>
-                    <li className="navli"><Link href={'/login'} ><a>로그인</a></Link></li>
+                    <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>                   
+                    {!userInfo && <li className="navli"><Link href={'/join'} ><a>회원가입</a></Link></li> }
+                    {!userInfo && <li className="navli"><Link href={'/login'} ><a>로그인</a></Link></li>  }
+                    {userInfo &&  <li className="navli"><Link href={'/login'} ><a>회원정보</a></Link></li> }
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

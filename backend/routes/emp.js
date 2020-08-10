@@ -15,7 +15,7 @@ router.post('/', async (req,res,next)=>{
             stringQuery =stringQuery.concat(`${currentPage},`); 
             stringQuery =stringQuery.concat(`${maxPage})`);
         const emplist = await pool.query(stringQuery); 
-        console.log(emplist[0]);
+        
         res.json(emplist[0]); 
         console.log(emplist[1][0], stringQuery,req.cookies['COOKIE_SECRET']); 
 

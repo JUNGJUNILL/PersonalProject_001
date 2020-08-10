@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors'); 
 const morgan = require('morgan'); 
 const cookieParser = require('cookie-parser'); 
+const passport = require('passport'); 
 const expressSession = require('express-session'); 
 const dotenv = require('dotenv');
 const passportConfig = require('./passport'); 
@@ -17,12 +18,12 @@ const authAPIRouter = require('./routes/auth');
 
 app.use(morgan('dev')); 
 app.use(cors({
-    origin:true,
-    credentials:true, 
-})); //프론트 백엔드간 쿠키주고 받기 위함, 
-
+    origin: true, 
+    credentials:true,
+    //--프론트와 백엔드간에 쿠키 주고 받기 위함
+}));
 app.use(express.json()); 
-app.use(express.urlencoded({extended:true})); 
+app.use(express.urlencoded({extended : true})); //form 데이터 처리 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession({
     resave : false,             //매번 세션 강제 저장
@@ -36,6 +37,9 @@ app.use(expressSession({
     name:'rnbck',
 
 }));
+
+app.use(passport.initialize()); 
+app.use(passport.session());
 
 app.use('/api/emp',empAPIRouter); 
 app.use('/api/auth',authAPIRouter); 

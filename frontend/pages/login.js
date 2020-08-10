@@ -23,12 +23,12 @@ const Login = ()=>{
         }); 
     },[]); 
 
-    const onSubmit = useCallback(()=>{
-
+    const onSubmit = useCallback((e)=>{
+        e.preventDefault();
         dispatch({type:LOGIN_REQUEST,
                   data: {
-                        id : id, 
-                        password: password, 
+                    userId:id,  
+                    password:password, 
                   }
         }); 
 
@@ -54,11 +54,11 @@ const Login = ()=>{
                 <div className='divTableBody'>
                     <div className='divTableRow'>
                             <div className='divTableCell'>아이디:</div>
-                            <input type="text" name="id" value={id} onChange={onChangeId}/>
+                            <input type="text" name="userId" value={id} onChange={onChangeId}/>
                     </div>
                     <div className='divTableRow'>
                             <div className='divTableCell'>비밀번호:</div>
-                            <input type="password" name="nickname" value={password} onChange={onChangPassword} />
+                            <input type="password" name="password" value={password} onChange={onChangPassword} />
                     </div>
                 </div>
             </div>

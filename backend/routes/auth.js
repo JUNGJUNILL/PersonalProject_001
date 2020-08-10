@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 //회원가입 
-router.post('/', async (req,res,next)=>{
+router.post('/join', async (req,res,next)=>{
     try{
 
         
@@ -36,47 +36,42 @@ router.post('/', async (req,res,next)=>{
 
 
 //로그인 
-router.post('/login' , async (req,res,next)=>{
-
+router.post('/login',(req,res,next)=>{
+    console.log(req.body.data); 
     passport.authenticate('local',(err,user,info)=>{
-
-        //서버에러
-        if(err){
-            console.error(err); 
-            return next(err); 
-        }
-
-        //로그인 실패사유
-        if(info){
-            console.log('info' , info); 
-            return res.status(401).send(info.reason); 
-        }
-
-        return req.login(user,async (loginErr)=>{
-
-            try{
-
-                if(loginErr){
-                    console.error(loginErr); 
-                    return next(loginErr); 
-                }
-
-                let stringQuery = 'CALL US_SELECT_getUserInfo'; 
-                stringQuery = stringQuery.concat(`('${user.id})'`);
-       
-                const userInfo = await pool.query(stringQuery); 
-                return res.json(userInfo); 
-
-            }catch(e){
-                console.error(e);
-                next(e); 
+            //console.log('router/user/login==>',user); 
+            if(err){
+                    console.error(err); 
+                    return next(err); 
             }
 
-        }); 
+            if(info){
+                    return res.status(401).send(info.reason); 
+            }
 
+            return req.login(user, async (loginErr)=>{
 
+            try{
+                if(loginErr){
+                    console.log('loginERR==>' , loginErr); 
+                    console.error(loginErr); 
+                    return next(loginErr); 
+            }
+                
+
+                let stringQuery = 'CALL US_SELECT_getUserInfo'; 
+                stringQuery = stringQuery.concat(`('${user.userId}')`);
+
+                const userInfo = await pool.query(stringQuery); 
+                return res.json(userInfo); 
+                 
+                    
+            }catch(e){
+                    console.error(e);
+                    next(e); 
+            }
+            });
     })(req,res,next); 
 
-});
-
+}); 
 module.exports  = router; 

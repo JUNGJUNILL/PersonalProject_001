@@ -12,8 +12,8 @@ from '../reducers/auth';
 
 
 function APIJoin(data){
-
-    return axios.post('/auth',{data},{withCredentials:true}); 
+    console.log('data==>' , data); 
+    return axios.post('/auth/join',{data},{withCredentials:true}); 
 
 }
 
@@ -46,16 +46,21 @@ function* watchJoin(){
 }
 
 function APILogin(data){
-
-    return axios.post('/auth/login',{data},{withCredentials:true}); 
+    return axios.post('/auth/login',data,{withCredentials:true}); 
 }
 
 
 function* sagaLogin(action){
 
-    const result = yield call(APILogin,action.data); 
 
     try{
+        const result = yield call(APILogin,action.data); 
+
+        yield put({
+            type:LOGIN_SUCCESS,
+            data: result.data[0],
+        }); 
+
 
     }catch(e){
         alert('로그인 에러'); 
@@ -67,7 +72,7 @@ function* sagaLogin(action){
 }
 
 function* watchLogin(){
-    yield takeLatest(LOGIN_REQUEST,sagaLogin); 
+    yield takeEvery(LOGIN_REQUEST,sagaLogin); 
 }
 
 

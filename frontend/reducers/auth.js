@@ -7,7 +7,7 @@ export const  initialState = {
     joined   : ''   , //회원가입 성공 
 
     isLogining : false, //로그인 시도 중
-    userInfo : [],      //사용자 정보
+    userInfo : null,      //사용자 정보
 
 
 }
@@ -66,6 +66,7 @@ const reducer = (state = initialState, action) =>{
 
             case LOGIN_SUCCESS :{
                 draft.isLogining = false; 
+                draft.userInfo = action.data; 
                 break; 
             }
         
@@ -75,7 +76,7 @@ const reducer = (state = initialState, action) =>{
             }
 //------------------------------------------------
 
-            default :       break;
+            default :  break;
     
              
         }
