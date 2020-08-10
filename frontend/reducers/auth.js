@@ -22,6 +22,10 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export const LOAD_LOGIN_REQUEST = 'LOAD_LOGIN_REQUEST'; 
 
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST'; 
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS'; 
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE'; 
+
 const reducer = (state = initialState, action) =>{
 
 
@@ -71,6 +75,24 @@ const reducer = (state = initialState, action) =>{
             }
         
             case LOGIN_FAILURE :{
+
+                break; 
+            }
+//------------------------------------------------
+
+
+//로그인 정보 유지 
+//------------------------------------------------
+            case LOAD_USER_REQUEST :{
+                break; 
+            }
+
+            case LOAD_USER_SUCCESS :{
+                draft.userInfo = action.data; 
+                break; 
+            }
+
+            case LOAD_USER_FAILURE :{
 
                 break; 
             }

@@ -7,15 +7,60 @@ import
      LOGIN_REQUEST,
      LOGIN_SUCCESS,
      LOGIN_FAILURE, 
+     LOAD_USER_REQUEST,
+     LOAD_USER_SUCCESS,
+     LOAD_USER_FAILURE,
     } 
 from '../reducers/auth'; 
 
 
+//유저정보 유지 사이클 
+//------------------------------------------------------------------------
+function APILoadUser(){
+
+    return axios.get(`/auth` , {withCredentials:true}); 
+}
+
+function* sagaLoadUser(action){
+
+    try{
+        const result = yield call(APILoadUser,action.data); 
+        console.log('result====>' , result); 
+        yield put({
+                type:LOAD_USER_SUCCESS, 
+
+            
+        }); 
+
+    }catch(e){
+        console.error(e); 
+        yield put({
+            type:LOAD_USER_FAILURE,
+            error:e, 
+        });
+    }
+
+}
+
+
+function* watchLoadUser(){
+    yield takeLatest(LOAD_USER_REQUEST,sagaLoadUser);
+}
+//------------------------------------------------------------------------
+
+
+
+
+//회원가입 사이클 
+//------------------------------------------------------------------------
 function APIJoin(data){
     console.log('data==>' , data); 
     return axios.post('/auth/join',{data},{withCredentials:true}); 
 
 }
+
+
+
 
 function* sagaJoin(action){
     
@@ -29,7 +74,7 @@ function* sagaJoin(action){
 
     }catch(e){
 
-        alert('에러발생'); 
+      console.error(e); 
 
         yield put({
             type:JOIN_FAILURE,
@@ -44,11 +89,15 @@ function* sagaJoin(action){
 function* watchJoin(){
     yield takeLatest(JOIN_REQUEST,sagaJoin)
 }
+//------------------------------------------------------------------------
 
+
+
+//로그인 사이클
+//------------------------------------------------------------------------
 function APILogin(data){
     return axios.post('/auth/login',data,{withCredentials:true}); 
 }
-
 
 function* sagaLogin(action){
 
@@ -74,6 +123,7 @@ function* sagaLogin(action){
 function* watchLogin(){
     yield takeEvery(LOGIN_REQUEST,sagaLogin); 
 }
+//------------------------------------------------------------------------
 
 
 export default function* authSag(){
@@ -82,6 +132,7 @@ export default function* authSag(){
     yield all([
         fork(watchJoin), 
         fork(watchLogin), 
+        fork(watchLoadUser), 
         
     ])
 }

@@ -1,9 +1,19 @@
 const express = require('express');
 const passport = require('passport');
+const {isLoggedIn} = require('./middlewares')
 const bcrypt = require('bcrypt');
 const pool = require('../DataBaseInfo');
-
 const router = express.Router();
+
+
+//유저정보 유지 
+router.get('/',isLoggedIn,(req,res)=>{
+
+    const userInfo = req.user[0][0]; 
+    delete userInfo.password; 
+    return res.json(userInfo); 
+
+}); 
 
 
 //회원가입 

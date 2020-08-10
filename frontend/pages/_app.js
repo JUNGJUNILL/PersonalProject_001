@@ -15,6 +15,7 @@ import reducer  from '../reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../sagas'; 
+import { LOAD_USER_REQUEST } from '../reducers/auth';
 
 
 
@@ -43,6 +44,18 @@ Project01_TodoList.getInitialProps = async (context)=>{
                                             //▲ next에서 제공해줌
   const { ctx,Component } = context; 
   let pageProps ={}; 
+
+  const state = ctx.store.getState(); 
+  //console.log('all state=>>' , state); 
+  //프로젝트 전체 stat를 가져 올 수 있다. 
+
+  //(새로고침)로그인 정보 유지
+  if(!state.auth.userInfo){
+      ctx.store.dispatch({
+        type:LOAD_USER_REQUEST,
+      });
+
+  }
 
   if(Component.getInitialProps){
   pageProps =  await Component.getInitialProps(ctx); 
