@@ -12,16 +12,16 @@ import PropTypes from 'prop-types'
 const AppLayOut = ({children}) =>{
     const dummyList = ['카테코리01','카테코리02','카테코리03','카테코리04','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05','카테코리05']; 
 
-    const {userInfo} = useSelector(state=> state.auth); 
-
-    useEffect(()=>{
-        console.log('userInfo==>' , userInfo); 
-        if(userInfo){
-         //   alert(joined); 
-            Router.push('/'); 
-        }
+    const {userInfo} = useSelector(state=>state.auth); 
+    console.log('AppLayOut userInfo==>' ,userInfo); 
+    // useEffect(()=>{
+    //     //console.log('userInfo==>' , userInfo); 
+    //     if(userInfo){
+    //      //   alert(joined); 
+    //         Router.push('/'); 
+    //     }
         
-    },[userInfo])
+    // },[])
 
     const [isClicked,setIsClicked] = useState(false); 
     const inputEl = useRef(null); 

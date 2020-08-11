@@ -18,22 +18,21 @@ from '../reducers/auth';
 //------------------------------------------------------------------------
 function APILoadUser(){
 
-    return axios.get(`/auth` , {withCredentials:true}); 
+    return axios.get('/auth/' , {withCredentials:true}); 
 }
 
-function* sagaLoadUser(action){
+function* sagaLoadUser(){
 
     try{
-        const result = yield call(APILoadUser,action.data); 
-        console.log('result====>' , result); 
+        const result = yield call(APILoadUser);
+    
         yield put({
                 type:LOAD_USER_SUCCESS, 
-
-            
+                data: result.data,           
         }); 
 
     }catch(e){
-        console.error(e); 
+        console.error('LOAD_USER_FAILURE=>' , e); 
         yield put({
             type:LOAD_USER_FAILURE,
             error:e, 
@@ -44,7 +43,7 @@ function* sagaLoadUser(action){
 
 
 function* watchLoadUser(){
-    yield takeLatest(LOAD_USER_REQUEST,sagaLoadUser);
+    yield takeEvery(LOAD_USER_REQUEST,sagaLoadUser);
 }
 //------------------------------------------------------------------------
 
@@ -104,10 +103,9 @@ function* sagaLogin(action){
 
     try{
         const result = yield call(APILogin,action.data); 
-
         yield put({
             type:LOGIN_SUCCESS,
-            data: result.data[0],
+            data: result.data,
         }); 
 
 

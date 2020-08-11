@@ -9,9 +9,18 @@ const router = express.Router();
 //유저정보 유지 
 router.get('/',isLoggedIn,(req,res)=>{
 
-    const userInfo = req.user[0][0]; 
-    delete userInfo.password; 
-    return res.json(userInfo); 
+    try{
+        const userInfo = req.user; 
+        if(userInfo){
+            return res.json(userInfo); 
+        }
+        
+
+    }catch(e){
+        console.log('에러냐??=>' , e); 
+        next(e); 
+    }
+
 
 }); 
 
@@ -72,7 +81,9 @@ router.post('/login',(req,res,next)=>{
                 let stringQuery = 'CALL US_SELECT_getUserInfo'; 
                 stringQuery = stringQuery.concat(`('${user.userId}')`);
 
-                const userInfo = await pool.query(stringQuery); 
+                const User = await pool.query(stringQuery); 
+                delete User[0][0].password; 
+                const userInfo =User[0][0]; 
                 return res.json(userInfo); 
                  
                     

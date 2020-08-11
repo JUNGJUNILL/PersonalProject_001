@@ -17,16 +17,17 @@ module.exports = () =>{
                 let stringQuery = 'CALL US_SELECT_getUserInfo'; 
                 stringQuery = stringQuery.concat(`('${userId}')`);
                 const user = await pool.query(stringQuery); 
-
                 if(!user){
                     return done(null,false,{reason:'존재하지 않는 사용자 입니다.'}); 
                 }
 
-                const result = await bcrypt.compare(password,user[0][0].password); 
+                const result = await bcrypt.compare(password,user[0][0].password);
+                delete user[0][0].password;  
+                const userInfo = user[0][0]; 
                 
                 //로그인 성공 
                 if(result){
-                    return done(null,user[0][0]); 
+                    return done(null,userInfo); 
                 }
 
                 return done(null,false,{reason:'비밀번호가 틀립니다.'}); 

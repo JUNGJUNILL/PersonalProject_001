@@ -7,7 +7,7 @@ module.exports = () =>{
 
 
     passport.serializeUser((user,done)=>{
-        console.log('user.userId=>' , user.userId)
+        console.log('passport.index.js' , user); 
         return done(null,user.userId); 
     }); 
 
@@ -17,12 +17,13 @@ module.exports = () =>{
         try{
             let stringQuery = 'CALL US_SELECT_getUserInfo'; 
             stringQuery = stringQuery.concat(`('${id}')`);
-            const userInfo = await pool.query(stringQuery); 
-     
+            const user = await pool.query(stringQuery); 
+            delete user[0][0].password; 
+            const userInfo =user[0][0];
             return done(null,userInfo); 
 
         }catch(e){
-            console.log('passport/index.js ===>' , e); 
+            console.log('passport/index.js===>' , e); 
             console.error(e); 
             return done(e); 
         }
