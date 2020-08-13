@@ -12,6 +12,7 @@ export const  initialState = {
 
 }
 
+
 export const JOIN_REQUEST = 'JOIN_REQUEST'; 
 export const JOIN_SUCCESS = 'JOIN_SUCCESS'; 
 export const JOIN_FAILURE = 'JOIN_FAILURE'; 
@@ -25,6 +26,10 @@ export const LOAD_LOGIN_REQUEST = 'LOAD_LOGIN_REQUEST';
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST'; 
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS'; 
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE'; 
+
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'; 
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'; 
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'; 
 
 const reducer = (state = initialState, action) =>{
 
@@ -69,7 +74,7 @@ const reducer = (state = initialState, action) =>{
             }
 
             case LOGIN_SUCCESS :{
-                draft.isLogining = false; 
+                draft.isLogining = false;               
                 draft.userInfo = action.data; 
                 break; 
             }
@@ -94,6 +99,22 @@ const reducer = (state = initialState, action) =>{
 
             case LOAD_USER_FAILURE :{
 
+                break; 
+            }
+//------------------------------------------------
+
+//로그아웃 
+//------------------------------------------------
+            case LOGOUT_REQUEST :{
+                break; 
+            }
+
+            case LOGOUT_SUCCESS :{
+                draft.userInfo =null; 
+                break; 
+            }
+
+            case LOGOUT_FAILURE :{
                 break; 
             }
 //------------------------------------------------

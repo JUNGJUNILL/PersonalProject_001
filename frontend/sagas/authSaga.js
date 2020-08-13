@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jwtDeCoder from 'jwt-decode'
 import {all,fork,takeLatest,takeEvery ,put, delay,call} from 'redux-saga/effects'; 
 import 
     {JOIN_REQUEST,
@@ -10,6 +11,9 @@ import
      LOAD_USER_REQUEST,
      LOAD_USER_SUCCESS,
      LOAD_USER_FAILURE,
+     LOGOUT_REQUEST,
+     LOGOUT_SUCCESS,
+     LOGOUT_FAILURE,
     } 
 from '../reducers/auth'; 
 
@@ -25,10 +29,9 @@ function* sagaLoadUser(){
 
     try{
         const result = yield call(APILoadUser);
-    
         yield put({
                 type:LOAD_USER_SUCCESS, 
-                data: result.data,           
+                data: result.data.nick,           
         }); 
 
     }catch(e){
@@ -92,10 +95,52 @@ function* watchJoin(){
 
 
 
+
+//로그아웃 사이클
+//------------------------------------------------------------------------
+function APILogOut(){
+
+    return axios.get('/auth/logOut',{withCredentials:true});
+
+
+}
+
+function* sagaLogOut(){
+
+
+    try{
+      const result =   yield call(APILogOut); 
+    
+
+        yield put({
+            type:LOGOUT_SUCCESS,
+        }); 
+
+
+    }catch(e){
+        alert('로그아웃 에러'); 
+        yield put({
+            type:LOGOUT_FAILURE, 
+            error:e,
+        })
+    }
+}
+
+function* watchLogOut(){
+    yield takeLatest(LOGOUT_REQUEST,sagaLogOut); 
+}
+//------------------------------------------------------------------------
+
+
 //로그인 사이클
 //------------------------------------------------------------------------
 function APILogin(data){
-    return axios.post('/auth/login',data,{withCredentials:true}); 
+
+    //jwt 로그인
+    return axios.post('/auth/login',{data},{withCredentials:true});
+
+    //passport local 로그인
+    //return axios.post('/auth/login',data,{withCredentials:true});
 }
 
 function* sagaLogin(action){
@@ -103,9 +148,13 @@ function* sagaLogin(action){
 
     try{
         const result = yield call(APILogin,action.data); 
+        
+        console.log('result' , result.data.token); 
+        const decoded = jwtDeCoder(result.data.token); 
+
         yield put({
             type:LOGIN_SUCCESS,
-            data: result.data,
+            data: decoded.nick,
         }); 
 
 
@@ -131,6 +180,7 @@ export default function* authSag(){
         fork(watchJoin), 
         fork(watchLogin), 
         fork(watchLoadUser), 
+        fork(watchLogOut), 
         
     ])
 }

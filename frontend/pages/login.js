@@ -1,6 +1,7 @@
 
 import {useCallback,useState,useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router'; 
 import 
     {LOAD_LOGIN_REQUEST,
      LOGIN_REQUEST, 
@@ -17,11 +18,12 @@ const Login = ()=>{
     const [id,setId] = useState(''); 
     const [password, setPassword] = useState('');
 
+
     useEffect(()=>{
         dispatch({
             type:LOAD_LOGIN_REQUEST, 
         }); 
-    },[]); 
+    },[userInfo]); 
 
     const onSubmit = useCallback((e)=>{
         e.preventDefault();

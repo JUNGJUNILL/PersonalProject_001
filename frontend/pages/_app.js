@@ -20,7 +20,7 @@ import { LOAD_USER_REQUEST } from '../reducers/auth';
 
 
 //프로젝트 고정 틀
-const Project01_TodoList = ({Component}) =>{
+const Project01_TodoList = ({Component,pageProps}) =>{
 
         return (
             <div>
@@ -30,7 +30,7 @@ const Project01_TodoList = ({Component}) =>{
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd-mobile/2.3.3/antd-mobile.css" integrity="sha256-uZbNsqglsHyapiY6Nlj8o9kAmliY/rWNCTqthjIHIXw=" crossorigin="anonymous" />
                 </Head>
                 <AppLayOut>
-                    <Component />
+                    <Component {...pageProps} />
                 </AppLayOut>
             </div>
             ); 
@@ -80,16 +80,12 @@ Project01_TodoList.propTypes = {
 
 }
 
-const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
-  console.log(action);
-  return next(action);
-};
 
 
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); 
-  const middlewares = [sagaMiddleware,loggerMiddleware]; // 미들웨어들을 넣으면 된다.
+  const middlewares = [sagaMiddleware]; // 미들웨어들을 넣으면 된다.
   
   const enhancer = process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(...middlewares))

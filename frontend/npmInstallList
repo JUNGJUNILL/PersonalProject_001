@@ -29,3 +29,5 @@ npm i prop-types
 
 npm i axios
 
+npm i jwt-decode
+

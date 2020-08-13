@@ -6,10 +6,16 @@ import
 from '../reducers/emp'; 
 
 
+import 
+    {LOAD_USER_REQUEST,
+    } 
+from '../reducers/auth'; 
+
 const Emp = () =>{
 
 
     const dispatch = useDispatch(); 
+    const {userInfo, joined} = useSelector((state)=>state.auth);
     const {emplist}    = useSelector(state => state.emp); 
                                  //store의 state를 불러오는 hook 
                                  //store의 state 중에서 count의 state를 불러온다.
@@ -32,6 +38,10 @@ const Emp = () =>{
                   maxPage:postsPerPage
                  }, 
         })
+
+        dispatch({
+            type:LOAD_USER_REQUEST,
+        }); 
       },[]); 
 
 
@@ -69,6 +79,10 @@ const Emp = () =>{
                               
     return (
         <>
+        {userInfo && <p>로그인됨</p>}
+        {!userInfo && <p>로그인안됨</p>}
+
+        
          <div className='divTable' style={{marginTop:'3%'}}>
            <div className='divTableBody'>
            <div className='divTableRow'>

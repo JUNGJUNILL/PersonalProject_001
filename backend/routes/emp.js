@@ -1,13 +1,13 @@
 const express = require('express'); 
 const router  = express.Router(); 
 const pool = require('../DataBaseInfo'); 
+const {isLoggedIn,vertifiyToken} = require('./middlewares')
 
 
 
-router.post('/', async (req,res,next)=>{
+router.post('/', vertifiyToken, async (req,res,next)=>{
 
     try{    
-        
         const {name , job, currentPage, maxPage}= req.body.data;   
         let stringQuery = 'CALL US_SELECT_emp'; 
             stringQuery =stringQuery.concat(`('${name}',`);

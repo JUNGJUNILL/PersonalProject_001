@@ -25,21 +25,23 @@ app.use(cors({
     credentials:true,
     //--프론트와 백엔드간에 쿠키 주고 받기 위함
 }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(expressSession({
-    resave : false,             //매번 세션 강제 저장
-    saveUninitialized : false,  //빈 값도 저장
-    secret: process.env.COOKIE_SECRET, 
-    cookie :{
-        httpOnly : true, 
-        secure: false, //https 시 true
-      //  maxAge : 1000*60*60,
-    },
-    name:'rnbck',
+app.use(cookieParser()); //req.cookies 사용가능, 
 
-}));
-app.use(passport.initialize()); 
-app.use(passport.session()); 
+
+// app.use(expressSession({
+//     resave : false,             //매번 세션 강제 저장
+//     saveUninitialized : false,  //빈 값도 저장
+//     secret: process.env.COOKIE_SECRET, 
+//     cookie :{
+//         httpOnly : true, 
+//         secure: false, //https 시 true
+//       //  maxAge : 1000*60*60,
+//     },
+//     name:'rnbck',
+
+// }));
+// app.use(passport.initialize()); 
+// app.use(passport.session()); 
 
 
 app.use('/api/emp',empAPIRouter); 
