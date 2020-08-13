@@ -159,7 +159,6 @@ router.post('/login',async (req,res,next)=>{
 router.get('/logOut',(req,res)=>{
 
     res.clearCookie(process.env.COOKIE_SECRET); 
-    res.json('쎆?ㅆ1'); 
 
 }); 
 

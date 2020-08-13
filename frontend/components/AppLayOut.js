@@ -23,6 +23,12 @@ const AppLayOut = ({children}) =>{
         dispatch({
             type:LOAD_USER_REQUEST, 
         }); 
+
+        //로그 아웃 후 메인 페이지로 이동
+        if(!userInfo){
+            Router.push('/'); 
+
+        }
     },[userInfo])
 
 

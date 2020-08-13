@@ -24,14 +24,6 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/count": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/emp": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/index": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
