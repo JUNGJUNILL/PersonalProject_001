@@ -5,7 +5,7 @@ const {isLoggedIn,vertifiyToken} = require('./middlewares')
 
 
 
-router.post('/', vertifiyToken, async (req,res,next)=>{
+router.post('/', async (req,res,next)=>{
 
     try{    
         const {name , job, currentPage, maxPage}= req.body.data;   
@@ -17,7 +17,7 @@ router.post('/', vertifiyToken, async (req,res,next)=>{
         const emplist = await pool.query(stringQuery); 
         
         res.json(emplist[0]); 
-        console.log(emplist[1][0], stringQuery,req.cookies['COOKIE_SECRET']); 
+        console.log(stringQuery); 
 
     }catch(e){
         console.log(e); 

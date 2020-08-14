@@ -48,7 +48,6 @@ Project01_TodoList.getInitialProps = async (context)=>{
   const cookie = isServer ? ctx.req.headers.cookie : ''; 
 
   if(isServer && cookie){
-      console.log('웩?')
       //클라이언 환경에서는 브라우저가 쿠키를 넣어주고, 
       //SSR일 때는 우리가 직접 넣어줘야 한다. 
       axios.defaults.headers.Cookie = cookie; 
@@ -57,7 +56,7 @@ Project01_TodoList.getInitialProps = async (context)=>{
 
   //(새로고침)로그인 정보 유지
   if(!state.auth.userInfo){
-      console.log('잌??',state.auth.userInfo); 
+  
       ctx.store.dispatch({
         type:LOAD_USER_REQUEST,
       });

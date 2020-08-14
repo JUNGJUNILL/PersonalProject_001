@@ -125,16 +125,38 @@ http://www.daks.me/try.php?filename=trycss3_pagination5.php
   height: 100%;
   width: 100%;
 }
+.divTableRowTh {
+  display: table-row;
+  background-color: rgb(168, 230, 186);
+  height: 50px;
+  width: 100%;
+}
+/*
 .divTableHeading {
 	background-color: #EEE;
   display: table-header-group;
 
 }
+*/
 
-.divTableCell, .divTableHead {
-	border: 1px solid #999999;
+.divTableCellTh {
+
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.divTableCell {
+	border-bottom: 1px solid #999999;
   display: table-cell;
 }
+
+.divTableCell a:hover {
+  text-decoration: underline;
+  color: red;
+  
+}
+
 .divTableHeading {
 	background-color: #EEE;
 	display: table-header-group;

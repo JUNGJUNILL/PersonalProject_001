@@ -33,12 +33,10 @@ exports.vertifiyToken = (req,res,next) =>{
   try{
     //쿠키에 저장된 토큰 유요성 검증 
     req.decoded = jwt.verify(req.cookies[process.env.COOKIE_SECRET],process.env.JWT_SECRET); 
-
-  
     return next(); 
 
   }catch(e){
-
+    console.log(e); 
     if(e.name ==='TokenExpiredError'){ //토큰 유효기간 초과
       return res.status(419).json({
         conde:419,

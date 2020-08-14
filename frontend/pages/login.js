@@ -19,11 +19,11 @@ const Login = ()=>{
     const [password, setPassword] = useState('');
 
 
-    useEffect(()=>{
-        dispatch({
-            type:LOAD_LOGIN_REQUEST, 
-        }); 
-    },[userInfo]); 
+    // useEffect(()=>{
+    //     dispatch({
+    //         type:LOAD_LOGIN_REQUEST, 
+    //     }); 
+    // },[userInfo]); 
 
     const onSubmit = useCallback((e)=>{
         e.preventDefault();

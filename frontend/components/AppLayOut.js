@@ -2,7 +2,7 @@
 import {useCallback,useState,useEffect, useRef} from 'react'
 import Link from 'next/link'
 import {Row,Col} from  'antd'; 
-import { Result, Icon, WhiteSpace } from 'antd-mobile';
+import { Result, Icon, WhiteSpace,Button } from 'antd-mobile';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router'; 
 import styled from 'styled-components';
@@ -20,16 +20,13 @@ const AppLayOut = ({children}) =>{
     const {userInfo, joined} = useSelector((state)=>state.auth); 
 
     useEffect(()=>{
-        dispatch({
-            type:LOAD_USER_REQUEST, 
-        }); 
 
         //로그 아웃 후 메인 페이지로 이동
         if(!userInfo){
             Router.push('/'); 
 
         }
-    },[userInfo])
+    },[userInfo]);
 
 
     const logOut = useCallback((e)=>{
@@ -63,11 +60,11 @@ const AppLayOut = ({children}) =>{
                     <li className="navli"><Link href={'/'} ><a>Home</a></Link></li>
                     <li className="navli"><Link href={'/about'} ><a>About</a></Link></li>
                     <li className="navli"><Link href={'/count'} ><a>Count</a></Link></li>
-                    <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>                   
+                    {userInfo && <li className="navli"><Link href={'/emp'} ><a>emp</a></Link></li>    }               
                     {!userInfo && <li className="navli"><Link href={'/join'} ><a>회원가입</a></Link></li> }
                     {!userInfo && <li className="navli"><Link href={'/login'} ><a>로그인</a></Link></li>  }
                     {userInfo &&  <li className="navli"><Link href={'/userInfo'} ><a>회원정보</a></Link></li> }
-                    {userInfo &&  <li className="navli" onClick={logOut}>로그아웃</li> }
+                    {userInfo &&   <li className="navli" onClick={logOut} >로그아웃</li>}
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

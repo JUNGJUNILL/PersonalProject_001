@@ -26,7 +26,7 @@ function* sagaEmpList(action){
     }catch(e){
 
         console.error(e); 
-        alert('사가 에러',e); 
+        alert('error', e); 
         yield put({
             type:EMP_LIST_FAILURE, 
             error: e, 

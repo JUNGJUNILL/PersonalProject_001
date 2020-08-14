@@ -17,7 +17,7 @@ router.get('/',vertifiyToken,(req,res)=>{
             return res.json(userInfo); 
         }
     }catch(e){
-        console.log(e); 
+        console.log(''); 
         next(e); 
     }
 }); 
@@ -159,6 +159,7 @@ router.post('/login',async (req,res,next)=>{
 router.get('/logOut',(req,res)=>{
 
     res.clearCookie(process.env.COOKIE_SECRET); 
+    res.json('짹쓰')
 
 }); 
 
