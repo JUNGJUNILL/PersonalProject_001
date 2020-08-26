@@ -172,4 +172,12 @@ http://www.daks.me/try.php?filename=trycss3_pagination5.php
   height: 100%;
 }
 
-/**/
+/*DivTable.com div로 테이블 만들기 */
+
+
+.demo-editor {
+  height: 500px !important;
+  border: 1px solid #F1F1F1 !important;
+  padding: 5px !important;
+  border-radius: 2px !important;
+}

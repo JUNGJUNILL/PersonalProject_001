@@ -31,3 +31,10 @@ npm i axios
 
 npm i jwt-decode
 
+--------------------------------------------
+npm i draft-js --facebook에서 만든 에디터 
+npm i react-draft-wysiwyg
+npm i draftjs-to-html 
+npm i html-to-draftjs
+--------------------------------------------
+

@@ -1,6 +1,9 @@
 import React, { useCallback,useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Pagenation from '../utilComponent/Pagenation'
+import Router from 'next/router'; 
+import {Button} from 'antd'
+
 import 
     {EMP_LIST_REQUEST,} 
 from '../reducers/emp'; 
@@ -28,6 +31,13 @@ const Emp = () =>{
     const getEmplist = useCallback(()=>{
           
     },[])
+
+    const gotoEdit = useCallback(()=>{
+
+            Router.push('/myEdit'); 
+    },[]); 
+
+
 
     useEffect(()=>{
         dispatch({
@@ -110,6 +120,7 @@ const Emp = () =>{
             </div>
          </div>
         <Pagenation pagenate={pagenate} dataLength={emplist.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray} />
+        <Button onClick={gotoEdit}>글쓰기</Button>
         </>
     )
 

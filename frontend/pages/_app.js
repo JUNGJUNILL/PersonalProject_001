@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import 'antd/dist/antd.css'; 
 import  '../CSS/antdMobile.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 
 
 

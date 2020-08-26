@@ -10,6 +10,7 @@ import PropTypes from 'prop-types'
 import { LOAD_USER_REQUEST,
          LOGOUT_REQUEST,
 } from '../reducers/auth';
+
 import wrapper from '../store/configureStore';
 
 
