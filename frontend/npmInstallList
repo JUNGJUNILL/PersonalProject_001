@@ -33,7 +33,7 @@ npm i jwt-decode
 
 --------------------------------------------
 npm i draft-js --facebook에서 만든 에디터 
-npm i react-draft-wysiwyg
+npm i react-draft-wysiwyg -- draft-js를 활용해서 인도여자가 만든 에디터 
 npm i draftjs-to-html 
 npm i html-to-draftjs
 --------------------------------------------

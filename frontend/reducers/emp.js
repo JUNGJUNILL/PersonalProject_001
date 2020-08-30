@@ -10,6 +10,11 @@ export const EMP_LIST_REQUEST = 'EMP_LIST_REQUEST';
 export const EMP_LIST_SUCCESS = 'EMP_LIST_SUCCESS'; 
 export const EMP_LIST_FAILURE = 'EMP_LIST_FAILURE'; 
 
+
+export const EMP_INSERT_REQUEST = 'EMP_INSERT_REQUEST'; 
+export const EMP_INSERT_SUCCESS = 'EMP_INSERT_SUCCESS'; 
+export const EMP_INSERT_FAILURE = 'EMP_INSERT_FAILURE'; 
+
 const reducer = (state = initialState, action) =>{
 
 
