@@ -6,12 +6,17 @@ import
      EMP_LIST_FAILURE,
      EMP_INSERT_REQUEST,
      EMP_INSERT_SUCCESS,
-     EMP_INSERT_FAILURE
+     EMP_INSERT_FAILURE,
+     UPLOAD_IMAGES_REQUEST,
+     UPLOAD_IMAGES_SUCCESS,
+     UPLOAD_IMAGES_FAILURE,
     } 
 from '../reducers/emp'; 
 
 
 
+//EMP SELECT
+//-----------------------------------------------------------------------------------
 function APIempList(data){
     return axios.post('/emp',{data},{withCredentials:true})
 }
@@ -20,7 +25,6 @@ function* sagaEmpList(action){
 
     try{
       const result = yield call(APIempList,action.data); 
-        console.log(result); 
       yield  put({
             type:EMP_LIST_SUCCESS, 
             data:result.data,
@@ -40,8 +44,11 @@ function* sagaEmpList(action){
 function* watchempList(){
     yield takeLatest(EMP_LIST_REQUEST,sagaEmpList); 
 }
+//-----------------------------------------------------------------------------------
 
 
+//EMP INSERT 
+//-----------------------------------------------------------------------------------
 function APIempInsert(data){
 
     return axios.post('/')
@@ -76,11 +83,56 @@ function* sagaEmpInsert(action){
 function* watchInsertEmp(){
     yield takeLatest(EMP_INSERT_REQUEST,sagaEmpInsert); 
 }
+//-----------------------------------------------------------------------------------
+
+
+
+
+// FILE UPLOAD 
+//-----------------------------------------------------------------------------------
+function APIUploadImage(formData){
+    return axios.post('/emp/images',formData,{withCredentials:true}); 
+}
+
+function* upLoadImages(action){
+
+
+    try{
+        const result = yield call(APIUploadImage,action.data); 
+        yield  put({
+              type:UPLOAD_IMAGES_SUCCESS, 
+              data:result.data,
+          });
+  
+      }catch(e){
+  
+          console.error(e); 
+          alert('error', e); 
+          yield put({
+              type:UPLOAD_IMAGES_FAILURE, 
+              error: e, 
+          }); 
+      }
+
+}
+
+
+
+function* watchUploadImages(){
+    yield takeLatest(UPLOAD_IMAGES_REQUEST,upLoadImages); 
+}
+//-----------------------------------------------------------------------------------
+
+
+
+
+
 
 export default function* empListSaga(){
 
     yield all([
         fork(watchempList), 
         fork(watchInsertEmp), 
+        fork(watchUploadImages), 
      ])
 }

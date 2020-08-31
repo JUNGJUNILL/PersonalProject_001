@@ -10,7 +10,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
 
-import withRedux , {createWrapper} from 'next-redux-wrapper';
+import {createWrapper} from 'next-redux-wrapper';
 import { createStore, compose, applyMiddleware } from 'redux';
 import reducer  from '../reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -96,7 +96,7 @@ const configureStore = () => {
                 //react에서 redux를 사용하기 위해서는 createStore로 store를 생성해 주어야 한다. 
                 //redux-next-wapper 6 버전 부터는 Provider store={store}를 내부적으로 해 준다. 
 
-   sagaMiddleware.run(rootSaga); 
+   //sagaMiddleware.run(rootSaga);  이새끼때문에 REQUEST, SUCCESS 2번씩 실행됨 ㅅㅂ 
    store.sagaTask = sagaMiddleware.run(rootSaga);
    return store;
 

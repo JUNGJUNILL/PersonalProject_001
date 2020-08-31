@@ -1,13 +1,15 @@
 import {Editor} from 'react-draft-wysiwyg'
 import { EditorState,convertToRaw } from 'draft-js';
 import { useState, useCallback, useRef } from 'react';
-import {Button} from 'antd'
+import {Button, Input} from 'antd'
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
 import { useDispatch, useSelector } from 'react-redux';
 import 
-    {EMP_INSERT_REQUEST,} 
+    {EMP_INSERT_REQUEST, 
+     UPLOAD_IMAGES_REQUEST,
+    } 
 from '../reducers/emp'; 
 
 
@@ -16,21 +18,32 @@ const Myeditor = () =>{
 
     const dispatch = useDispatch(); 
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    //<p></p>
+
     const [content , setContent] = useState(''); 
+    const [mainPostTitle , setMainPostTitle] = useState(''); 
     const {userInfo} = useSelector((state)=>state.auth);
+    const {imagePaths} = useSelector((state)=>state.emp); 
+    
     const imageInput = useRef(); 
 
     //제출
     const editContent = useCallback(()=>{
+
+        if(!mainPostTitle || !mainPostTitle.trim()){
+            alert('제목을 입력해 주세요.'); 
+            return; 
+        }
+
         if(!content || !content.trim()){
             alert('게시글을 입력 해 주세요.'); 
             return; 
         }
+
         dispatch({  
             type:EMP_INSERT_REQUEST, 
             data:{
                 content : content, 
+                title   : mainPostTitle, 
                 nickName : userInfo, 
             }
             
@@ -39,38 +52,73 @@ const Myeditor = () =>{
     },[content]); 
 
 
+    //게시글 제목 입력 
+    const mainPostTitleChange = useCallback((e)=>{
 
-    //이미지 업로드 클릭 
-    const onClickImageUpload = useCallback(() =>{
+        setMainPostTitle(e.target.value); 
 
-        imageInput.current.click(); 
-    },[imageInput.current])
+    },[mainPostTitle])
+
 
 
     //이미지 업로드 창 
     const onChangeImages = useCallback((e)=>{
         
         const imageFormData = new FormData(); 
-    
-        [].forEach.call(e.target.files,(f)=>{
+        Array.prototype.forEach.call(e.target.files ,(f)=>{
             imageFormData.append('image',f); 
         });
-
+        
+        dispatch({
+                type:UPLOAD_IMAGES_REQUEST,
+                data:imageFormData,             
+        }); 
 
     },[]); 
 
 
-   const onEditorStateChange = useCallback((editState)=>{
 
-    setEditorState(editState); 
+    //이미지 업로드 클릭 
+    const onClickImageUpload = useCallback(() =>{
+        imageInput.current.click(); 
+
+    },[imageInput.current]); 
+
+
+    //이미지 본문 삽입 
+    const insertContent = useCallback(()=>{
+        let b = ""; 
+       b =  content.concat(`<img src="http://localhost:3095/pictureTest1598882059100.jpg" alt="undefined" style="height: auto;width: auto"/>`)
+       onEditorStateChange(b); 
+    },[content]); 
+
+
+
+
+   //본문 입력
+   const onEditorStateChange = useCallback((editState)=>{
+    console.log('editState==>', editState); 
+    setEditorState(editState);  
     setContent(draftToHtml(convertToRaw(editorState.getCurrentContent()))); 
 
    },[editorState]);
 
     return (    
     <>
-        <input type="file" multiple ref={imageInput} onChange={onChangeImages} hidden />
+    <div>
+    {imagePaths && imagePaths.map((v,i)=>{
+        return (
+
+            <div key={v} >
+             <img src={`http://localhost:3095/${v}`} style={{width:'20%',height:'20%' }} alt={v} />
+             <button onClick={insertContent}>본문삽입</button>
+            </div>
+        )
+    })}
+    </div>
+         <input type="file" multiple ref={imageInput} onChange={onChangeImages} hidden />
          <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+         <Input name="mainPostTitle" value={mainPostTitle} onChange={mainPostTitleChange} placeholder="제목을 입력 해 주세요." size="25"/>
          <Editor
             editState={editorState}
             wrapperClassName="demo-wrapper"
@@ -78,8 +126,10 @@ const Myeditor = () =>{
            localization={{
                locale:'ko', 
            }}
-        
+    
+
            onEditorStateChange={onEditorStateChange}
+           
             />
             <Button onClick={editContent}>작성</Button>
 

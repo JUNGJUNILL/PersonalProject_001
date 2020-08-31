@@ -17,6 +17,7 @@ const empAPIRouter = require('./routes/emp');
 const authAPIRouter = require('./routes/auth'); 
 
 app.use(morgan('dev')); 
+app.use('/',express.static('uploads')); 
 
 app.use(express.json()); 
 app.use(express.urlencoded({extended : true})); //form 데이터 처리 
