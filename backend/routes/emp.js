@@ -4,6 +4,7 @@ const pool = require('../DataBaseInfo');
 const {isLoggedIn,vertifiyToken} = require('./middlewares'); 
 const multer =require('multer'); 
 const path   =require('path');
+const fs = require('fs'); 
 
 
 
@@ -11,6 +12,7 @@ const path   =require('path');
 const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, done) {
+        console.log('file==>' , file); 
         done(null, 'uploads');
       },
       filename(req, file, done) {
@@ -22,13 +24,47 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 },
   });
 
+    //일반 이미지 업로드 
     //이미지 업로드
                                //none
                                //fields
                                //single
 router.post('/images',upload.array('image'),(req,res)=>{
-
+        console.log('images==>' , req.files); 
     return res.json(req.files.map(v=>v.filename)); 
+
+}); 
+
+
+router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
+    console.log('req.files==>' , req.file); 
+    const TempFile = req.file; 
+    console.log('TempFile==>' , TempFile); 
+    const TempPathfile = TempFile.path; 
+    console.log('TempPathfile==>' , TempPathfile); 
+    const targetPathUrl = path.join(__dirname,"../uploads/"+TempFile.filename); 
+    console.log('targetPathUrl==>', targetPathUrl); 
+    console.log('TempFile.originalname==>' , TempFile.originalname); 
+    if(path.extname(TempFile.originalname).toLowerCase() ===".png" || ".jpg"){
+
+
+      fs.rename(TempPathfile , targetPathUrl , err =>{
+
+        res.status(200).json({
+          uploaded:true,
+          url:`http://localhost:3095/${TempFile.filename}`
+        })
+
+        if(err){
+          console.error(err); 
+          next(); 
+        }
+
+      })
+
+    }
+
+    console.log(req.files); 
 
 }); 
   

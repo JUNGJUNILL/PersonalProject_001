@@ -17,7 +17,7 @@ router.get('/',vertifiyToken,(req,res)=>{
             return res.json(userInfo); 
         }
     }catch(e){
-        console.log(''); 
+        console.error(e);
         next(e); 
     }
 }); 
@@ -31,15 +31,15 @@ router.post('/join', async (req,res,next)=>{
         const {id,nickname,password,email,phone,address} = req.body.data; 
         const hashedPassword = await bcrypt.hash(password,12); 
         let stringQuery = 'CALL US_INSERT_client'; 
-            stringQuery = stringQuery.concat(`('${id}',`)
-            stringQuery = stringQuery.concat(`'${nickname}',`)
-            stringQuery = stringQuery.concat(`'${hashedPassword}',`)
-            stringQuery = stringQuery.concat(`'${password}',`)
-            stringQuery = stringQuery.concat(`'${password}',`)
-            stringQuery = stringQuery.concat(`'${password}',`)
-            stringQuery = stringQuery.concat(`'${email}',`)
-            stringQuery = stringQuery.concat(`'${phone}',`)
-            stringQuery = stringQuery.concat(`'${address}')`)
+            stringQuery = stringQuery.concat(`('${id}',`);
+            stringQuery = stringQuery.concat(`'${nickname}',`);
+            stringQuery = stringQuery.concat(`'${hashedPassword}',`);
+            stringQuery = stringQuery.concat(`'${password}',`);
+            stringQuery = stringQuery.concat(`'${password}',`);
+            stringQuery = stringQuery.concat(`'${password}',`);
+            stringQuery = stringQuery.concat(`'${email}',`);
+            stringQuery = stringQuery.concat(`'${phone}',`);
+            stringQuery = stringQuery.concat(`'${address}')`);
 
         const clientInsert = await pool.query(stringQuery);
 
@@ -159,7 +159,7 @@ router.post('/login',async (req,res,next)=>{
 router.get('/logOut',(req,res)=>{
 
     res.clearCookie(process.env.COOKIE_SECRET); 
-    res.json('짹쓰')
+    res.json('로그아웃'); 
 
 }); 
 

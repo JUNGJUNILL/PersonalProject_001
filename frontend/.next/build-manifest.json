@@ -9,7 +9,7 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
+    "/CKEditor": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
@@ -24,11 +24,7 @@
     "/_polyfills": [
       "static/runtime/polyfills.js"
     ],
-    "/index": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/myEdit": [
+    "/login": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

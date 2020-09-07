@@ -23,7 +23,6 @@ module.exports = () =>{
             return done(null,userInfo); 
 
         }catch(e){
-            console.log('passport/index.js===>' , e); 
             console.error(e); 
             return done(e); 
         }

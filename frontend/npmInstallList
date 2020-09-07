@@ -38,3 +38,20 @@ npm i draftjs-to-html
 npm i html-to-draftjs
 --------------------------------------------
 
+
+
+--------------------------------------------
+CKEditor 
+npm install --save @ckeditor/ckeditor5-build-classic
+npm install --save @ckeditor/ckeditor5-react
+npm install --save @ckeditor/ckeditor5-ckfinder
+
+
+
+npm install --save @ckeditor/ckeditor5-basic-styles
+npm install --save @ckeditor/ckeditor5-upload
+
+
+--------------------------------------------
+
+

@@ -35,7 +35,7 @@ function* sagaLoadUser(){
         }); 
 
     }catch(e){
-        console.error('LOAD_USER_FAILURE=>' , e); 
+        console.error(e); 
         yield put({
             type:LOAD_USER_FAILURE,
             error:e, 
@@ -173,7 +173,7 @@ function* watchLogin(){
 //------------------------------------------------------------------------
 
 
-export default function* authSag(){
+export default function* authSaga(){
 
 
     yield all([

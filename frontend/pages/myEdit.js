@@ -1,7 +1,7 @@
 import {Editor} from 'react-draft-wysiwyg'
 import { EditorState,convertToRaw } from 'draft-js';
 import { useState, useCallback, useRef } from 'react';
-import {Button, Input} from 'antd'
+import {Button, Input, Alert} from 'antd'
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
@@ -80,6 +80,7 @@ const Myeditor = () =>{
 
     //이미지 업로드 클릭 
     const onClickImageUpload = useCallback(() =>{
+        alert("??"); 
         imageInput.current.click(); 
 
     },[imageInput.current]); 
@@ -97,7 +98,7 @@ const Myeditor = () =>{
 
    //본문 입력
    const onEditorStateChange = useCallback((editState)=>{
-    console.log('editState==>', editState); 
+       console.log(draftToHtml(convertToRaw(editorState.getCurrentContent()))); 
     setEditorState(editState);  
     setContent(draftToHtml(convertToRaw(editorState.getCurrentContent()))); 
 
@@ -126,6 +127,14 @@ const Myeditor = () =>{
            localization={{
                locale:'ko', 
            }}
+           toolbar={{
+            image: { uploadCallback: onClickImageUpload, 
+                     alt: { present: true, mandatory: true },
+                     inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                    
+                   },
+          }}
+      
     
 
            onEditorStateChange={onEditorStateChange}

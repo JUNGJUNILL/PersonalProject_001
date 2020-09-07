@@ -11,6 +11,11 @@
   "author": "JJI",
   "license": "MIT",
   "dependencies": {
+    "@ckeditor/ckeditor5-basic-styles": "^22.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^22.0.0",
+    "@ckeditor/ckeditor5-ckfinder": "^22.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@ckeditor/ckeditor5-upload": "^22.0.0",
     "antd": "^4.4.0",
     "antd-mobile": "^2.3.3",
     "axios": "^0.19.2",

@@ -34,7 +34,7 @@ const Emp = () =>{
 
     const gotoEdit = useCallback(()=>{
 
-            Router.push('/myEdit'); 
+            Router.push('/CKEditor'); 
     },[]); 
 
 

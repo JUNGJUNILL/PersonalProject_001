@@ -49,16 +49,21 @@ Project01_TodoList.getInitialProps = async (context)=>{
   const isServer = typeof window === 'undefined' || !!context.req || !!context.ctx.req;
   const cookie = isServer ? ctx.req.headers.cookie : ''; 
 
+  //그냥 일반 접속자
+  if(isServer){
+   
+    console.log('hello'); 
+  }
+
+  //로그인 접속자
   if(isServer && cookie){
       //클라이언 환경에서는 브라우저가 쿠키를 넣어주고, 
       //SSR일 때는 우리가 직접 넣어줘야 한다. 
       axios.defaults.headers.Cookie = cookie; 
   }
-  
 
   //(새로고침)로그인 정보 유지
   if(!state.auth.userInfo){
-  
       ctx.store.dispatch({
         type:LOAD_USER_REQUEST,
       });
@@ -102,5 +107,6 @@ const configureStore = () => {
 
 }
   
-const wrapper = createWrapper(configureStore, {debug:  process.env.NODE_ENV === 'development'}); 
+//const wrapper = createWrapper(configureStore, {debug:  process.env.NODE_ENV === 'development'}); 
+const wrapper = createWrapper(configureStore, {debug:  false}); 
 export default wrapper.withRedux(Project01_TodoList); 

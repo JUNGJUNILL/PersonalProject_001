@@ -36,18 +36,18 @@ exports.vertifiyToken = (req,res,next) =>{
     return next(); 
 
   }catch(e){
-    console.log(e); 
+
     if(e.name ==='TokenExpiredError'){ //토큰 유효기간 초과
-      return res.status(419).json({
+      return res.status(419).send({
         conde:419,
         message:'토큰이 만료되었습니다.', 
       }); 
     }
 
-    return res.status(401).json({
+    return res.status(401).send({
       code:401,
       message : '유효하지 않는 토큰입니다.', 
-    })
+    }); 
 
   }
 
