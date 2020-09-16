@@ -10,6 +10,10 @@ import
      UPLOAD_IMAGES_REQUEST,
      UPLOAD_IMAGES_SUCCESS,
      UPLOAD_IMAGES_FAILURE,
+
+    TEST_REQUEST,
+    TEST_SUCCESS,
+    TEST_FAILURE
     } 
 from '../reducers/emp'; 
 
@@ -25,6 +29,7 @@ function* sagaEmpList(action){
 
     try{
       const result = yield call(APIempList,action.data); 
+      console.log('empSelect=>' , result.data)
       yield  put({
             type:EMP_LIST_SUCCESS, 
             data:result.data,
@@ -51,7 +56,7 @@ function* watchempList(){
 //-----------------------------------------------------------------------------------
 function APIempInsert(data){
 
-    return axios.post('/')
+    return axios.post('/emp/empInsert',{data},{withCredentials:true})
 
 }
 
@@ -59,13 +64,12 @@ function* sagaEmpInsert(action){
 
     try{
 
-        console.log('sagaEmpInsert==>' , action.data); 
-
-        // const result = yield call(APIempInsert,action.data); 
-        // yield  put({
-        //       type:EMP_INSERT_SUCCESS, 
-        //       data:result.data,
-        //   });
+        const result = yield call(APIempInsert,action.data); 
+        console.log('saga' , result); 
+        yield  put({
+              type:EMP_INSERT_SUCCESS, 
+              data:result.data,
+          });
   
       }catch(e){
   
@@ -84,7 +88,6 @@ function* watchInsertEmp(){
     yield takeLatest(EMP_INSERT_REQUEST,sagaEmpInsert); 
 }
 //-----------------------------------------------------------------------------------
-
 
 
 
@@ -127,6 +130,49 @@ function* watchUploadImages(){
 
 
 
+//TEST
+//-----------------------------------------------------------------------------------
+
+function APItest(data){
+
+    return axios.post('/emp/select',{data},{withCredentials:true})
+
+}
+
+function* sagaTest(action){
+
+    try{
+
+        const result = yield call(APItest,action.data); 
+        console.log('sagasagates' , result.data); 
+        yield  put({
+              type:TEST_SUCCESS, 
+              data:result.data,
+          });
+  
+      }catch(e){
+  
+          console.error(e); 
+          alert('error', e); 
+          yield put({
+              type:TEST_FAILURE, 
+              error: e, 
+          }); 
+      }
+
+}
+
+
+function* watchTest(){
+    yield takeLatest(TEST_REQUEST,sagaTest); 
+}
+//-----------------------------------------------------------------------------------
+
+
+
+
+
+
 
 export default function* empListSaga(){
 
@@ -134,5 +180,6 @@ export default function* empListSaga(){
         fork(watchempList), 
         fork(watchInsertEmp), 
         fork(watchUploadImages), 
+        fork(watchTest), 
      ])
 }

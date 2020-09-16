@@ -7,8 +7,9 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import 
-    {EMP_INSERT_REQUEST, 
-     UPLOAD_IMAGES_REQUEST,
+    {
+        EMP_INSERT_REQUEST,
+        TEST_REQUEST
     } 
 from '../reducers/emp'; 
 
@@ -16,30 +17,54 @@ from '../reducers/emp';
 const Editor = ()=>{
 
     const dispatch = useDispatch(); 
-    const {imagePaths} = useSelector((state)=>state.emp); 
+    const {imagePaths} = useSelector((state)=>state.emp);
+    const {userInfo} = useSelector((state)=>state.auth); 
     const [content,setContent] = useState('');   
+    const [title,setTtile] = useState(''); 
     const imageInput = useRef(); 
 
-    const abc = ()=>{
-        console.log('content=>' , content); 
-        alert(content); 
+    const testSummit = () =>{
+
+        dispatch({
+            type: TEST_REQUEST,
+
+
+       }); 
     }
 
-        //이미지 업로드 창 
-        const onChangeImages = useCallback((e)=>{
-        
-            const imageFormData = new FormData(); 
-            Array.prototype.forEach.call(e.target.files ,(f)=>{
-                imageFormData.append('image',f); 
-            });
-            
+
+    //게시글 제출 
+    const contentSummit = ()=>{
+  
             dispatch({
-                    type:UPLOAD_IMAGES_REQUEST,
-                    data:imageFormData,             
+                 type: EMP_INSERT_REQUEST,
+                 data: {content:encodeURI(content),
+                        title:encodeURI(title),
+                        userNickName:encodeURI(userInfo), 
+                },
+
             }); 
+    }
+
+    //제목 입력
+    const onChangeTtitle  = useCallback((e)=>{
+        setTtile(e.target.value); 
+    },[title])
+
+    //이미지 업로드 창 
+    const onChangeImages = useCallback((e)=>{
     
-        },[]); 
-    
+        const imageFormData = new FormData(); 
+        Array.prototype.forEach.call(e.target.files ,(f)=>{
+            imageFormData.append('image',f); 
+        });
+        
+        dispatch({
+                type:UPLOAD_IMAGES_REQUEST,
+                data:imageFormData,             
+        }); 
+
+    },[]); 
 
 
     //이미지 업로드 클릭 
@@ -58,6 +83,7 @@ const Editor = ()=>{
         <input type="file" multiple ref={imageInput} onChange={onChangeImages} hidden />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         */}
+        <Input placeholder='제목을 입력하세요' onChange={onChangeTtitle} style={{marginBottom:'1%'}}/>
         <CKEditor
             editor={ ClassicEditor }
             config={{
@@ -97,7 +123,8 @@ const Editor = ()=>{
                 console.log( 'Focus.', editor );
             } }
         />
-        <Button onClick={abc}>벗은</Button>
+        <Button type="primary" onClick={contentSummit} >작성</Button>
+        <Button type="primary" onClick={testSummit} >TEST</Button>
         </div>
        
 

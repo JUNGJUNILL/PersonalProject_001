@@ -36,15 +36,19 @@ router.post('/images',upload.array('image'),(req,res)=>{
 }); 
 
 
+//CKEditor image upload
 router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
-    console.log('req.files==>' , req.file); 
+
     const TempFile = req.file; 
     console.log('TempFile==>' , TempFile); 
+
     const TempPathfile = TempFile.path; 
     console.log('TempPathfile==>' , TempPathfile); 
+
     const targetPathUrl = path.join(__dirname,"../uploads/"+TempFile.filename); 
     console.log('targetPathUrl==>', targetPathUrl); 
     console.log('TempFile.originalname==>' , TempFile.originalname); 
+    
     if(path.extname(TempFile.originalname).toLowerCase() ===".png" || ".jpg"){
 
 
@@ -64,13 +68,11 @@ router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
 
     }
 
-    console.log(req.files); 
-
 }); 
   
 
 
-
+//게시글 SELECT
 router.post('/', async (req,res,next)=>{
 
     try{    
@@ -80,10 +82,11 @@ router.post('/', async (req,res,next)=>{
             stringQuery =stringQuery.concat(`'${job}',`); 
             stringQuery =stringQuery.concat(`${currentPage},`); 
             stringQuery =stringQuery.concat(`${maxPage})`);
+
         const emplist = await pool.query(stringQuery); 
-        
-        res.json(emplist[0]); 
         console.log(stringQuery); 
+        return res.json(emplist[0]); 
+      
 
     }catch(e){
         console.log(e); 
@@ -91,6 +94,60 @@ router.post('/', async (req,res,next)=>{
     }
 
 }); 
+
+
+//게시글 INSERT 
+router.post('/empInsert', async (req,res,next)=>{
+
+  try{
+      const {content,title,userNickName} = req.body.data; 
+      const _title   = decodeURIComponent(title); 
+      const _content = decodeURIComponent(content); 
+      const _userNickName   = decodeURIComponent(userNickName); 
+      const _postFlag = "1001"; 
+      let stringQuery = 'CALL US_INSERT_mainPosts'; 
+          stringQuery =stringQuery.concat(`('${_title}',`);
+          stringQuery =stringQuery.concat(`'${_content}',`); 
+          stringQuery =stringQuery.concat(`'${_userNickName}',`); 
+          stringQuery =stringQuery.concat(`'${_postFlag}')`);
+          
+
+      const empInsert = await pool.query(stringQuery); 
+      console.log(stringQuery); 
+      return res.status(200).json(empInsert); 
+
+
+  }catch(e){
+      console.log(e); 
+      next(e); 
+  }
+}); 
+
+
+//게시글 TEST 
+router.post('/select', async (req,res,next)=>{
+
+  try{
+      const postFlag = "1001"; 
+      let stringQuery = 'SELECT postid, content,title FROM mainPosts'; 
+          // stringQuery =stringQuery.concat(`('${title}',`);
+          // stringQuery =stringQuery.concat(`'${content}',`); 
+          // stringQuery =stringQuery.concat(`'${userNickName}',`); 
+          // stringQuery =stringQuery.concat(`'${postFlag}')`);
+          
+
+      const test = await pool.query(stringQuery); 
+      return res.json(test); 
+
+
+  }catch(e){
+      console.log(e); 
+      next(e); 
+  }
+}); 
+
+
+
 
 
 module.exports  = router; 

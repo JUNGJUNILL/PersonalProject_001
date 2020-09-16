@@ -21,6 +21,14 @@ export const UPLOAD_IMAGES_REQUEST="UPLOAD_IMAGES_REQUEST";
 export const UPLOAD_IMAGES_SUCCESS="UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE="UPLOAD_IMAGES_FAILURE";
 
+export const DETAIL_INFO_REQUEST ='DETAIL_INFO_REQUEST'; 
+export const DETAIL_INFO_SUCCESS ='DETAIL_INFO_SUCCESS'; 
+export const DETAIL_INFO_FAILURE ='DETAIL_INFO_FAILURE'; 
+
+export const TEST_REQUEST = 'TEST_REQUEST'; 
+export const TEST_SUCCESS = 'TEST_SUCCESS'; 
+export const TEST_FAILURE = 'TEST_FAILURE'; 
+
 
 const reducer = (state = initialState, action) =>{
 
@@ -29,6 +37,8 @@ const reducer = (state = initialState, action) =>{
 
         switch(action.type){
 
+            
+//----------------------------------------
             case EMP_LIST_REQUEST: {
                 break; 
             }
@@ -46,8 +56,10 @@ const reducer = (state = initialState, action) =>{
             case EMP_LIST_FAILURE: {
                 break; 
             }
+//----------------------------------------
 
 
+//----------------------------------------
             case UPLOAD_IMAGES_REQUEST: {
                 break; 
             }
@@ -66,7 +78,47 @@ const reducer = (state = initialState, action) =>{
             case UPLOAD_IMAGES_FAILURE: {
                 break; 
             }
+//----------------------------------------
 
+
+//게시글 작성 
+//----------------------------------------
+            case EMP_INSERT_REQUEST: {
+                break; 
+            }
+
+
+            case EMP_INSERT_SUCCESS: {
+
+
+                break; 
+            }
+
+            case EMP_INSERT_FAILURE: {
+                break; 
+            }
+//----------------------------------------
+
+
+
+
+//게시글 상세 페이지 가져오기 
+//----------------------------------------
+            case DETAIL_INFO_REQUEST: {
+                break; 
+            }
+
+
+            case DETAIL_INFO_SUCCESS: {
+
+
+                break; 
+            }
+
+            case DETAIL_INFO_FAILURE: {
+                break; 
+            }
+//----------------------------------------
 
 
 

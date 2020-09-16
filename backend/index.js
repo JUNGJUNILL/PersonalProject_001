@@ -19,6 +19,7 @@ app.use(cors({
 
 const empAPIRouter = require('./routes/emp'); 
 const authAPIRouter = require('./routes/auth'); 
+const mainPosts_1001APIRouter = require('./routes/mainPosts_1001'); 
 
 
 app.use(morgan('dev')); 
@@ -48,6 +49,7 @@ app.use(cookieParser()); //req.cookies 사용가능,
 
 app.use('/api/emp',empAPIRouter); 
 app.use('/api/auth',authAPIRouter); 
+app.use('/api/mainPosts_1001',mainPosts_1001APIRouter); 
 
 
 //에러

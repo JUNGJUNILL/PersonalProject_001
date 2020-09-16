@@ -65,6 +65,9 @@ const AppLayOut = ({children}) =>{
                     {!userInfo && <li className="navli"><Link href={'/join'} ><a>회원가입</a></Link></li> }
                     {!userInfo && <li className="navli"><Link href={'/login'} ><a>로그인</a></Link></li>  }
                     {userInfo &&  <li className="navli"><Link href={'/userInfo'} ><a>회원정보</a></Link></li> }
+                    {userInfo &&  <li className="navli"><Link href={'/detailPage'} ><a>상세페이지</a></Link></li> }
+                    {userInfo &&  <li className="navli"><Link href={'/mainPosts_1001'} ><a>메인1001</a></Link></li> }
+                    
                     {userInfo &&   <li className="navli" onClick={logOut} >로그아웃</li>}
                 </ul>
                 

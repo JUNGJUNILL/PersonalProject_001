@@ -47,8 +47,11 @@ Project01_TodoList.getInitialProps = async (context)=>{
   let pageProps ={}; 
   const state = ctx.store.getState();    //프로젝트 전체 stat를 가져 올 수 있다. 
   const isServer = typeof window === 'undefined' || !!context.req || !!context.ctx.req;
+  //SSR로 접속
+
   const cookie = isServer ? ctx.req.headers.cookie : ''; 
 
+  
   //그냥 일반 접속자
   if(isServer){
    

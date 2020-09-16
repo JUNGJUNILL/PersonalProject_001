@@ -42,7 +42,7 @@ router.post('/join', async (req,res,next)=>{
             stringQuery = stringQuery.concat(`'${address}')`);
 
         const clientInsert = await pool.query(stringQuery);
-
+        console.log(stringQuery); 
         return res.status(200).json(clientInsert);  
 
     }catch(e){

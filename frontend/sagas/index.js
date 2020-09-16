@@ -1,6 +1,7 @@
 import {all,call} from 'redux-saga/effects'; 
 import studySaga  from './studySaga';
 import empListSaga from './empListSaga'
+import mainPosts_1001Saga from './mainPosts_1001Saga'; 
 import authSaga from './authSaga'; 
 import axios from 'axios'
 
@@ -11,5 +12,6 @@ export default function* rootSaga(){
         call(studySaga), 
         call(empListSaga), 
         call(authSaga), 
+        call(mainPosts_1001Saga), 
     ])
 }

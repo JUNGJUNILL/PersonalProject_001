@@ -46,7 +46,7 @@ const About = ()=>{
       {dummyList.map((v,i)=>(
                <div className='divTableRow'  >
                 <div className='divTableCell' style={{width:'80px',height:'80px'}}><img src='https://dimg.donga.com/wps/NEWS/IMAGE/2019/11/24/98510015.1.jpg' style={{width:'80px',height:'80px'}}/></div>
-                <div className='divTableCell' ><Link href="#"><a>{v}</a></Link></div>
+                <div className='divTableCell' ><Link href={{pathname:'/detailPage' , query:{postId:'1001',nick:'abc',flag:'2222'}}} as={'detailPage'}><a>{v}</a></Link></div>
                 <div className='divTableCell' >{'운영자'}</div>
                 <div className='divTableCell' >{'20200818 : 14:30'}</div>
                 <div className='divTableCell' >{'125'}</div>
