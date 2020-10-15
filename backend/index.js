@@ -56,6 +56,13 @@ app.use('/api/mainPosts_1001',mainPosts_1001APIRouter);
 // app.use(function(e, req, res, next) {
 //     console.log('에러발생했어!!', e); 
 //   });
+app.get('/', (req,res)=>{
+
+    res.cookie('backs' ,'beer' ,{httpOnly:true,
+        secure:false, 
+}); 
+
+}); 
 
 app.listen(3095,()=>{
     console.log('server is Runnig in 3095 port'); 

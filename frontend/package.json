@@ -11,6 +11,7 @@
   "author": "JJI",
   "license": "MIT",
   "dependencies": {
+    "@ant-design/icons": "^4.2.2",
     "@ckeditor/ckeditor5-basic-styles": "^22.0.0",
     "@ckeditor/ckeditor5-build-classic": "^22.0.0",
     "@ckeditor/ckeditor5-ckfinder": "^22.0.0",

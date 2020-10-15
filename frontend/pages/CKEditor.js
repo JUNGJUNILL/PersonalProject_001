@@ -89,7 +89,7 @@ const Editor = ()=>{
             config={{
              
                 ckfinder:{
-                     uploadUrl:'http://localhost:3095/api/emp/ckeditor',
+                     uploadUrl:'http://captainryan.gonetis.com:3095/api/emp/ckeditor',
         
                     //  headers:{
                     //     "X-CSRF-TOKEN": "CSFR-Token",

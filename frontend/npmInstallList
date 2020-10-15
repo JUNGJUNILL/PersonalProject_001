@@ -3,6 +3,7 @@ npm i react react-dom next
 npm i -D nodemon webpack 
 npm i -g next
 npm i antd
+npm i --save @ant-design/icons
 
 npm install antd-mobile --save
 npm install --save styled-components

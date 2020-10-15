@@ -10,10 +10,11 @@ const router = express.Router();
 //유저정보 유지 
 router.get('/',vertifiyToken,(req,res)=>{
     try{
+        
         const userInfo = req.decoded; //req.decoded 토큰 정보 저장 
                                       //req.user    세션정보 저장(일반 로그인)
-        
         if(userInfo){
+            console.log('userInfo==>' ,userInfo); 
             return res.json(userInfo); 
         }
     }catch(e){

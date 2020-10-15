@@ -3,8 +3,11 @@ import produce from 'immer'
 
 export const  initialState = {
 
-    mainPosts_1001 : [], 
-    imagePaths : [],
+    mainPosts_1001     : [], 
+    mainPosts_1001Info : [{}], 
+                        //하 이것때매 몇시간을 날려 먹었는지.. 아크릴 새우님이 해결법을 알려주심
+    imagePaths         : [],
+    pppp               :2,
 
 }
 
@@ -63,8 +66,11 @@ const reducer = (state = initialState, action) =>{
             }
 
             case MAINPOSTS_1001_DETAIL_INFO_SUCCESS: {
-
-
+                draft.mainPosts_1001Info.length=0; 
+                //배열 초기화
+                action.data.forEach((v)=>{
+                    draft.mainPosts_1001Info.push(v); 
+                }); 
                 break; 
             }
 

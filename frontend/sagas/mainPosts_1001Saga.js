@@ -23,7 +23,7 @@ function APImainPosts_1001List(data){
 function* sagaMainPosts_1001List(action){
 
     try{
-      const result = yield call(APImainPosts_1001List,action.data); 
+      const result = yield call(APImainPosts_1001List,action.data);  
       yield  put({
             type:MAINPOSTS_1001_LIST_SUCCESS, 
             data:result.data,
@@ -57,9 +57,8 @@ function APImainPosts_1001Detail(data){
 function* sagaMainPosts_1001Detail(action){
 
     try{
-        console.log('detail' , action.data); 
       const result = yield call(APImainPosts_1001Detail,action.data); 
-      console.log('detail-->' , result.data);
+      console.log('infoSaga' ,result.data);;
       yield  put({
             type:MAINPOSTS_1001_DETAIL_INFO_SUCCESS, 
             data:result.data,

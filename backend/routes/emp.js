@@ -56,7 +56,7 @@ router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
 
         res.status(200).json({
           uploaded:true,
-          url:`http://localhost:3095/${TempFile.filename}`
+          url:`http://captainryan.gonetis.com:3095/${TempFile.filename}`
         })
 
         if(err){
@@ -74,7 +74,7 @@ router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
 
 //게시글 SELECT
 router.post('/', async (req,res,next)=>{
-
+    
     try{    
         const {name , job, currentPage, maxPage}= req.body.data;   
         let stringQuery = 'CALL US_SELECT_emp'; 
@@ -105,6 +105,17 @@ router.post('/empInsert', async (req,res,next)=>{
       const _content = decodeURIComponent(content); 
       const _userNickName   = decodeURIComponent(userNickName); 
       const _postFlag = "1001"; 
+
+      // let editContent=""; 
+      // const str = '<img';
+      // const strIndex = _content.indexOf(str); 
+      // if(strIndex !== -1){
+      //   editContent = _content.substring(0,strIndex+str.length)+` style="width:100%;height:auto"` + _content.substring(strIndex+str.length); 
+      // }else{
+      //   editContent = _content; 
+      // }
+      
+
       let stringQuery = 'CALL US_INSERT_mainPosts'; 
           stringQuery =stringQuery.concat(`('${_title}',`);
           stringQuery =stringQuery.concat(`'${_content}',`); 

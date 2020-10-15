@@ -40,6 +40,7 @@ const Emp = () =>{
 
 
     useEffect(()=>{
+
         dispatch({
             type:EMP_LIST_REQUEST, 
             data:{name:'',
@@ -48,6 +49,7 @@ const Emp = () =>{
                   maxPage:postsPerPage
                  }, 
         })
+
 
         dispatch({
             type:LOAD_USER_REQUEST,

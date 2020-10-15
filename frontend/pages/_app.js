@@ -55,7 +55,8 @@ Project01_TodoList.getInitialProps = async (context)=>{
   //그냥 일반 접속자
   if(isServer){
    
-    console.log('hello'); 
+    console.log('hello==>', axios.defaults.headers.Cookie); 
+
   }
 
   //로그인 접속자
