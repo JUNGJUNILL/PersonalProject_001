@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef,createRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {Button, Input, Alert} from 'antd'
@@ -21,7 +21,9 @@ const Editor = ()=>{
     const {userInfo} = useSelector((state)=>state.auth); 
     const [content,setContent] = useState('');   
     const [title,setTtile] = useState(''); 
+    const blank_pattern = /^\s+|\s+&/g;   
     const imageInput = useRef(); 
+    const ref = createRef(); 
 
     const testSummit = () =>{
 
@@ -35,7 +37,18 @@ const Editor = ()=>{
 
     //게시글 제출 
     const contentSummit = ()=>{
-  
+
+            if(title.length === 0 || title.replace(blank_pattern,'')===""){
+                ref.current.focus();  
+                alert('제목을 입력 해 주세요'); 
+                return; 
+            }
+
+            if(content.length === 0 || content.replace(blank_pattern,'')===""){
+                alert('게시글을 작성해 주세요'); 
+                return; 
+            }
+
             dispatch({
                  type: EMP_INSERT_REQUEST,
                  data: {content:encodeURI(content),
@@ -76,27 +89,27 @@ const Editor = ()=>{
 
     return(
 
-        
-        <div className="demo-editor">
+        //<div className="demo-editor" >         
+        <div style={{height:"400px"}}>
         <h2>게시글을 작성해 보세요!</h2>
         {/*
         <input type="file" multiple ref={imageInput} onChange={onChangeImages} hidden />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         */}
-        <Input placeholder='제목을 입력하세요' onChange={onChangeTtitle} style={{marginBottom:'1%'}}/>
+        <Input placeholder='제목을 입력하세요' ref={ref} onChange={onChangeTtitle} style={{marginBottom:'1%'}}/>
         <CKEditor
             editor={ ClassicEditor }
             config={{
              
                 ckfinder:{
-                     uploadUrl:'http://captainryan.gonetis.com:3095/api/emp/ckeditor',
-        
-                    //  headers:{
-                    //     "X-CSRF-TOKEN": "CSFR-Token",
-                    //     "Access-Control-Allow-Origin":"*", 
-                    // }
+                     uploadUrl:`http://captainryan.gonetis.com:3095/api/emp/ckeditor?postFlag=1001&user=${userInfo}`,
+                    
+                     options :{
+
+                     }
                     
                 },
+
                 toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList','imageUpload'],
                 placeholder: "글을 입력해보세요!",
             
@@ -124,7 +137,6 @@ const Editor = ()=>{
             } }
         />
         <Button type="primary" onClick={contentSummit} >작성</Button>
-        <Button type="primary" onClick={testSummit} >TEST</Button>
         </div>
        
 

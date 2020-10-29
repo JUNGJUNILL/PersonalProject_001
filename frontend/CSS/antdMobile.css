@@ -209,3 +209,10 @@ img {
   width:100%;
   height:auto;
 }
+
+
+
+
+.ck-editor__editable {
+  min-height: 400px;
+}

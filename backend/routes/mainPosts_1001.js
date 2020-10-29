@@ -77,7 +77,67 @@ router.post('/mainPosts_1001Detail', async (req,res,next)=>{
 }); 
 
 
+//게시글 댓글 리스트 
+router.post('/mainPosts_1001Comments', async (req,res,next)=>{
 
+
+    try{
+
+        const {postId, nickName, postFlag}= req.body.data; 
+        
+
+        let stringQuery = 'CALL US_SELECT_mainPostComments'; 
+        stringQuery =stringQuery.concat(`('${postFlag}',`);
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${nickName}')`);
+
+        const mainPosts_1001Comments = await pool.query(stringQuery); 
+        console.log(stringQuery); 
+        return res.json(mainPosts_1001Comments[0]); 
+
+
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+    }
+
+
+}); 
+
+
+
+//게시글 댓글 INSERT
+router.post('/mainPosts_1001CommentInsert', async (req,res,next)=>{
+
+
+    try{
+
+        const { postId,
+                postFlag,
+                nickName,
+                comment,}= req.body.data; 
+        
+
+        let stringQuery = 'CALL US_INSERT_mainPostsComments'; 
+        stringQuery =stringQuery.concat(`('${postId}',`);
+        stringQuery =stringQuery.concat(`'${postFlag}',`); 
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${comment}')`);
+
+        const mainPosts_1001CommentInsert = await pool.query(stringQuery); 
+        console.log(stringQuery); 
+        return res.json(mainPosts_1001CommentInsert[0]); 
+
+
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+    }
+
+
+}); 
 
 
 

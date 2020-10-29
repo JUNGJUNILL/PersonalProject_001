@@ -19,6 +19,14 @@
     ],
     "/_polyfills": [
       "static/runtime/polyfills.js"
+    ],
+    "/login": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/mainPosts_1001": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
     ]
   }
 }

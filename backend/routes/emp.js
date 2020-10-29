@@ -12,8 +12,15 @@ const fs = require('fs');
 const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, done) {
-        console.log('file==>' , file); 
-        done(null, 'uploads');
+
+        fs.readdir(`images/${req.query.postFlag}/${req.query.user}`,(error,files)=>{
+          if(error){
+            fs.mkdirSync(`images/${req.query.postFlag}/${req.query.user}`); 
+          }
+        }); 
+
+       done(null, 'images');
+       //done(null,'uploads'); 
       },
       filename(req, file, done) {
         const ext = path.extname(file.originalname);
@@ -38,6 +45,8 @@ router.post('/images',upload.array('image'),(req,res)=>{
 
 //CKEditor image upload
 router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
+    const postIdFolder       = req.query.postFlag; 
+    const userNickNameFolder = req.query.user; 
 
     const TempFile = req.file; 
     console.log('TempFile==>' , TempFile); 
@@ -45,18 +54,21 @@ router.post('/ckeditor',upload.single('upload'),(req,res,next)=>{
     const TempPathfile = TempFile.path; 
     console.log('TempPathfile==>' , TempPathfile); 
 
-    const targetPathUrl = path.join(__dirname,"../uploads/"+TempFile.filename); 
+    //const targetPathUrl = path.join(__dirname,"../images/"+TempFile.filename); 
+    const targetPathUrl = path.join(__dirname,`../images/${postIdFolder}/${userNickNameFolder}/`+TempFile.filename); 
     console.log('targetPathUrl==>', targetPathUrl); 
     console.log('TempFile.originalname==>' , TempFile.originalname); 
+
+
     
-    if(path.extname(TempFile.originalname).toLowerCase() ===".png" || ".jpg"){
+    if(path.extname(TempFile.originalname).toLowerCase() ===".png" || ".jpg" || ".gif"){
 
 
       fs.rename(TempPathfile , targetPathUrl , err =>{
 
         res.status(200).json({
           uploaded:true,
-          url:`http://captainryan.gonetis.com:3095/${TempFile.filename}`
+          url:`http://captainryan.gonetis.com:3095/${postIdFolder}/${userNickNameFolder}/${TempFile.filename}`
         })
 
         if(err){

@@ -1,11 +1,13 @@
 
 import React , {useState,useEffect,useCallback}from 'react'
+import {Button} from 'antd'
 import Router ,{ useRouter } from 'next/router';
 import Link from 'next/link'
 import Pagenation from '../utilComponent/Pagenation'
 import {DislikeTwoTone,LikeTwoTone ,EyeOutlined, UserOutlined, FieldTimeOutlined, FolderTwoTone} from '@ant-design/icons'
 import 
-    {MAINPOSTS_1001_LIST_REQUEST,} 
+    {MAINPOSTS_1001_LIST_REQUEST,
+    } 
 from '../reducers/mainPosts_1001'; 
 
 
@@ -22,24 +24,27 @@ import custumDateFormat from  '../utilComponent/custumDateFormat';
 
 const mainPosts_1001 = ({pages,group})=>{
 
-  const dispatch = useDispatch(); 
-  const router   = useRouter(); 
-  const {mainPosts_1001,pppp} = useSelector((state)=>state.mainPosts_1001); 
+  const dispatch         = useDispatch(); 
+  const router           = useRouter(); 
+  const {mainPosts_1001} = useSelector((state)=>state.mainPosts_1001); 
+  const {userInfo}       = useSelector((state)=>state.auth);
 
 
   /*-------------------------------------------페이징 처리 로직 start-------------------------------------------------------*/
   const [nowPage,setNowPage] = useState(0);                       //현재 페이지
   const [postsPerPage] = useState(2);                             //한 페이지당 list 수 
-  const [groupPage , setGroupPage] = useState(5);                 //페이징 그룹 당 수  1~5 , 6~10 , 11~15 ...
-  const [nowGroupPageArray,setNowGroupPageArray] =useState([]);   //현제 페이징 그룹 배열
-  const [page,setPage] = useState(0); 
+  const [groupPage , setGroupPage] = useState(5);                 //페이징 그룹 당 수  1~5 , 6~10 , 11~15 ... 5의 배수만 입력가능 
+  const [nowGroupPageArray,setNowGroupPageArray] =useState([]);   //현재 페이징 그룹 배열
+  
 
   const pagenate =useCallback((pageNumber, groupPageArray)=>{
-    console.log('pageNumber=>' , pageNumber , '  groupPageArray=>', groupPageArray); 
+
     setNowPage(pageNumber); 
+
     nowGroupPageArray.length=0; 
+
     setNowGroupPageArray(nowGroupPageArray.concat(groupPageArray));
-    console.log('nowGroupPageArray ==>',nowGroupPageArray); 
+
     const indexOfLastPost = pageNumber * postsPerPage;   
     const indexOfFirstPost = indexOfLastPost - postsPerPage;  
 
@@ -51,71 +56,53 @@ const mainPosts_1001 = ({pages,group})=>{
        }, 
     });
 
-   
-
 },[nowPage,nowGroupPageArray]); 
-/*-------------------------------------------페이징 처리 로직   end-------------------------------------------------------*/
 
+      
+  //01.페이지 첫 로드시.. 
+  //02.상세 정보 본 후 뒤로 가기 눌렀을 경우 
+  //03.페이지 이동 후 뒤로가기 눌렀을 경우
   useEffect(()=>{
-      //상세 정보 본 후 뒤로 가기 눌렀을 경우 
-      //페이지 이동후 뒤로가기 눌렀을 경우 
-      //페이지 첫 로드시.. 
-        // if(!pages){
-        //   console.log('useEffect' , pages); 
-        //   dispatch({
-        //     type:MAINPOSTS_1001_LIST_REQUEST, 
-        //     data:{postFlag:'1001',
-        //           currentPage:nowPage,
-        //           maxPage:postsPerPage
-        //         }, 
-        //   }); 
-        // }else{
 
-        // }
-          console.log('pages exists!  ' ,pages );
-          setPage(pages);
+      //초기에 groupPage 만큼 배열을 생생해 주어야 한다. 
+      let pageArray =Array.from({length: groupPage}, (v, i) => i);
 
-          let pageArray = [0,1,2,3,4];
 
-          if(pages ==='6'){
-            pageArray.length=0; 
-            pageArray=[5,6,7,8,9]
+      //groupPage 페이지 그룹 변경 시 로직 (5에서 ▶ 눌렀을 때)
+      if((group % groupPage === 0 )){
+              pageArray.length=0; 
 
-          }
+                for(let i=group; i<group+groupPage; i++){
+                  pageArray.push(i); 
 
-          //앞으로 그룹이동 
-          // if(pages === pageArray[pageArray.length]+1){
-          //   pageArray.length=0; 
-          //     for(let i=pageArray[pageArray.length]+1; i<groupPage; i++){
-          //       pageArray.push(i); 
-          //     }
-          // }    
+                }
+           }
+
           pagenate(parseInt(pages),pageArray);
       
-
-
-
   },[pages]); 
 
-  
-  const abc = ()=>{
-    if(pages){
-      pagenate(pages,[0,1,2]);
-    }else{
-      pagenate(2,[0,1,2]); 
-    }
-   
-  }
+  /*-------------------------------------------페이징 처리 로직   end-------------------------------------------------------*/
+
+
+  //게시글 상세 페이지 
   const gotoDetail = useCallback((postId,userNickName,postFlag)=>{
     router.push({pathname:'/detailPage',
                  query:{postId,nickName:userNickName,postFlag},
               }); 
-  },[])
+  },[]); 
+
+
+  //게시글 쓰기
+  const gotoEdit = useCallback(()=>{
+
+    router.push('/CKEditor'); 
+  },[]); 
+  
 
    return (
     <div>
-    <input type="button"  value="hello" onClick={abc}></input>
-    <Link href={{query:{nowPage:2}}} onClick={abc}><a>abc</a></Link>
+
       <div className="divTable">
             {mainPosts_1001.map((v,i)=>(
                <div className='divTableRow' onClick={()=>gotoDetail(v.postId,v.userNickName,'1001',nowPage)}>
@@ -127,32 +114,21 @@ const mainPosts_1001 = ({pages,group})=>{
               </div>
             ))}
       </div>
-    
-          <input type="button" value="뒤로가기" onClick={()=>router.back()}/>
-        <Pagenation pagenate={pagenate} dataLength={mainPosts_1001.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray} pages={page}/>
+
+
+      {userInfo &&  <Button type="primary" onClick={gotoEdit} style={{marginTop:"1%",display:"block",float:"right"}}>글쓰기</Button>}
+  
+      <Pagenation pagenate={pagenate} dataLength={mainPosts_1001.length} postsPerPage={postsPerPage} nowPage={nowPage} groupPage={groupPage} groupPageArray={nowGroupPageArray} />
 
     </div>
     );
-}; 11
+}; 
 
 mainPosts_1001.getInitialProps = async (context) =>{
 
   const pages = context.query.nowPage; 
-  const group = context.query.group;
-
-
-  // if(pages){
-  //    console.log('getInitialProps pages ==>', pages);
-  //   context.store.dispatch({
-  //     type:MAINPOSTS_1001_LIST_REQUEST, 
-  //     data:{postFlag:'1001',
-  //           currentPage: (pages*2)-2,
-  //           maxPage:2
-  //         }, 
-  //   })
-  // }
-
-  return {pages,group}; 
+  const group  =parseInt(context.query.group); 
+  return {pages, group}; 
 
 }
 
