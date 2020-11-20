@@ -57,7 +57,7 @@ exports.vertifiyToken = (req,res,next) =>{
     if(Object.keys(req.cookies).length === 0){ 
 
       const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
-      console.log('user ip ==>', ip); 
+      console.log('ip==>', ip); 
       res.cookie(process.env.NOTLOGIN_COOKIE, ip ,
                                                   {httpOnly:true,
                                                   secure:false, 

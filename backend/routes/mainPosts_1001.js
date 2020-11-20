@@ -83,13 +83,14 @@ router.post('/mainPosts_1001Comments', async (req,res,next)=>{
 
     try{
 
-        const {postId, nickName, postFlag}= req.body.data; 
+        const {postId, nickName, postFlag, who}= req.body.data; 
         
 
         let stringQuery = 'CALL US_SELECT_mainPostComments'; 
         stringQuery =stringQuery.concat(`('${postFlag}',`);
         stringQuery =stringQuery.concat(`'${postId}',`); 
-        stringQuery =stringQuery.concat(`'${nickName}')`);
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${who}')`);
 
         const mainPosts_1001Comments = await pool.query(stringQuery); 
         console.log(stringQuery); 
@@ -116,6 +117,7 @@ router.post('/mainPosts_1001CommentInsert', async (req,res,next)=>{
         const { postId,
                 postFlag,
                 nickName,
+                who,
                 comment,}= req.body.data; 
         
 
@@ -123,7 +125,17 @@ router.post('/mainPosts_1001CommentInsert', async (req,res,next)=>{
         stringQuery =stringQuery.concat(`('${postId}',`);
         stringQuery =stringQuery.concat(`'${postFlag}',`); 
         stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${who}',`); 
         stringQuery =stringQuery.concat(`'${comment}')`);
+        await pool.query(stringQuery); 
+    
+        stringQuery=''; 
+        stringQuery = 'CALL US_SELECT_mainPostComments'; 
+        stringQuery =stringQuery.concat(`('${postFlag}',`);
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${who}')`);
+
 
         const mainPosts_1001CommentInsert = await pool.query(stringQuery); 
         console.log(stringQuery); 
@@ -138,6 +150,59 @@ router.post('/mainPosts_1001CommentInsert', async (req,res,next)=>{
 
 
 }); 
+
+
+//게시글 댓글 LIKE / DISLIKE 
+router.post('/mainPosts_1001CommentLike', async (req,res,next)=>{
+
+
+    try{
+
+        const { 
+                commentid, 
+                postFlag,
+                postId,
+                flag,
+                who,
+                nickName,
+                }= req.body.data; 
+        
+
+        let stringQuery = 'CALL US_SELECT_mainPostCommentsLikeDislike '; 
+        stringQuery =stringQuery.concat(`('${commentid}',`);
+        stringQuery =stringQuery.concat(`'${postFlag}',`); 
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${who}')`);
+        console.log('stringQuery==>' , stringQuery); 
+        const mainPosts_1001CommentLike = await pool.query(stringQuery); 
+        console.log('플레그=>' , mainPosts_1001CommentLike[0][0].flag); 
+        if(mainPosts_1001CommentLike[0][0].flag=== "N"){
+            stringQuery=''; 
+            stringQuery = 'CALL US_INSERT_mainPostCommentsLikeDislike ';
+            stringQuery =stringQuery.concat(`('${commentid}',`);
+            stringQuery =stringQuery.concat(`'${postFlag}',`); 
+            stringQuery =stringQuery.concat(`'${postId}',`); 
+            stringQuery =stringQuery.concat(`'${nickName}',`); 
+            stringQuery =stringQuery.concat(`'${flag}',`); 
+            stringQuery =stringQuery.concat(`'${who}')`)
+            await pool.query(stringQuery); 
+        }
+
+
+        console.log(stringQuery); 
+        return res.json(commentid); 
+
+
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+    }
+
+
+}); 
+
 
 
 

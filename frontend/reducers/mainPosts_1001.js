@@ -9,7 +9,10 @@ export const  initialState = {
                         //하 이것때매 몇시간을 날려 먹었는지.. 아크릴 새우님이 해결법을 알려주심
     mainPosts_1001Comments : [], 
     imagePaths         : [],
-    pppp               :2,
+    likeIsClicked :null, 
+    clickCommentId:null, 
+    clickedInfo:[{}], 
+
 
 }
 
@@ -33,6 +36,11 @@ export const MAINPOSTS_1001_COMMENTS_FAILURE = 'MAINPOSTS_1001_COMMENTS_FAILURE'
 export const MAINPOSTS_1001_COMMENTINSERT_REQUEST = 'MAINPOSTS_1001_COMMENTINSERT_REQUEST';
 export const MAINPOSTS_1001_COMMENTINSERT_SUCCESS = 'MAINPOSTS_1001_COMMENTINSERT_SUCCESS';
 export const MAINPOSTS_1001_COMMENTINSERT_FAILURE = 'MAINPOSTS_1001_COMMENTINSERT_FAILURE'; 
+
+//게시글 댓글 like / dislike 
+export const MAINPOSTS_1001_COMMENTLIKE_REQUEST = 'MAINPOSTS_1001_COMMENTLIKE_REQUEST';
+export const MAINPOSTS_1001_COMMENTLIKE_SUCCESS = 'MAINPOSTS_1001_COMMENTLIKE_SUCCESS';
+export const MAINPOSTS_1001_COMMENTLIKE_FAILURE = 'MAINPOSTS_1001_COMMENTLIKE_FAILURE'; 
 
 
 
@@ -65,6 +73,28 @@ const reducer = (state = initialState, action) =>{
             }
 
             case MAINPOSTS_1001_LIST_FAILURE: {
+                break; 
+            }
+//----------------------------------------
+
+
+//게시글 댓글 INSERT   
+//----------------------------------------
+            case MAINPOSTS_1001_COMMENTINSERT_REQUEST: {
+                break; 
+            }
+
+            case MAINPOSTS_1001_COMMENTINSERT_SUCCESS: {
+
+                draft.mainPosts_1001Comments.length=0; 
+                action.data.forEach((v,i)=>{
+                    draft.mainPosts_1001Comments.push(v); 
+                }); 
+                
+                break; 
+            }
+
+            case MAINPOSTS_1001_COMMENTINSERT_FAILURE: {
                 break; 
             }
 //----------------------------------------
@@ -111,6 +141,30 @@ const reducer = (state = initialState, action) =>{
             }
 
             case MAINPOSTS_1001_COMMENTS_FAILURE: {
+                break; 
+            }
+//----------------------------------------
+
+
+
+
+//게시글 댓글 like / dislike       
+//----------------------------------------
+            case MAINPOSTS_1001_COMMENTLIKE_REQUEST: {
+                break; 
+            }
+
+            case MAINPOSTS_1001_COMMENTLIKE_SUCCESS: {
+
+                draft.mainPosts_1001Comments.length=0; 
+                action.data.forEach((v)=>{
+                    draft.mainPosts_1001Comments.push(v); 
+                }); 
+                
+                break; 
+            }
+
+            case MAINPOSTS_1001_COMMENTLIKE_FAILURE: {
                 break; 
             }
 //----------------------------------------

@@ -18,6 +18,10 @@ import
         MAINPOSTS_1001_COMMENTINSERT_SUCCESS,
         MAINPOSTS_1001_COMMENTINSERT_FAILURE, 
 
+        MAINPOSTS_1001_COMMENTLIKE_REQUEST,
+        MAINPOSTS_1001_COMMENTLIKE_SUCCESS,
+        MAINPOSTS_1001_COMMENTLIKE_FAILURE,
+
     } 
 from '../reducers/mainPosts_1001'; 
 
@@ -137,6 +141,13 @@ function* sagaMainPosts_1001CommentInsert(action){
 
     try{
       const result = yield call(APImainPosts_1001CommentInsert,action.data); 
+      const array=[]; 
+      result.data.map((v,i)=>{
+        result.data[0].kk='addComment'; 
+        array.push(v); 
+      }); 
+      
+
       yield  put({
             type:MAINPOSTS_1001_COMMENTINSERT_SUCCESS, 
             data:result.data,
@@ -161,6 +172,52 @@ function* watchMainPosts_1001CommentInsert(){
 
 
 
+//mainPost_1001 댓글 LIKE / DISLIKE 
+//-----------------------------------------------------------------------------------
+function APImainPosts_1001CommentLike(data){
+    return axios.post('/mainPosts_1001/mainPosts_1001CommentLike',{data},{withCredentials:true})
+}
+
+
+function* sagaMainPosts_1001CommentLike(action){
+
+    try{
+      const result = yield call(APImainPosts_1001CommentLike,action.data); 
+     
+        action.data.mainPosts_1001Comments.map((v,i)=>{
+            if(v.commentId === action.data.commentid){
+                action.data.mainPosts_1001Comments[i] = {...action.data.mainPosts_1001Comments[i], 
+                                                            clickedComponent:action.data.commentid,
+                                                            flag:'Y', 
+                                                            likeDislikeflag:action.data.flag}
+            }
+        }); 
+        
+      yield  put({
+            type:MAINPOSTS_1001_COMMENTLIKE_SUCCESS, 
+            data:action.data.mainPosts_1001Comments, 
+        });
+
+    }catch(e){
+
+        console.error(e); 
+        alert('error', e); 
+        yield put({
+            type:MAINPOSTS_1001_COMMENTLIKE_FAILURE, 
+            error: e, 
+        }); 
+    }
+}
+
+
+function* watchMainPosts_1001CommentLike(){
+    yield takeLatest(MAINPOSTS_1001_COMMENTLIKE_REQUEST,sagaMainPosts_1001CommentLike); 
+}
+//-----------------------------------------------------------------------------------
+
+
+
+
 
 export default function* mainPosts_1001Saga(){
 
@@ -169,5 +226,6 @@ export default function* mainPosts_1001Saga(){
         fork(watchMainPosts_1001Detail), 
         fork(watchMainPosts_1001CommentList), 
         fork(watchMainPosts_1001CommentInsert), 
+        fork(watchMainPosts_1001CommentLike), 
      ])
 }

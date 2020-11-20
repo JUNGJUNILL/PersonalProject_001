@@ -107,7 +107,7 @@ const mainPosts_1001 = ({pages,group})=>{
             {mainPosts_1001.map((v,i)=>(
                <div className='divTableRow' onClick={()=>gotoDetail(v.postId,v.userNickName,'1001',nowPage)}>
                   <div className='divTableCell'><div className="divImageCell"><img src='https://dimg.donga.com/wps/NEWS/IMAGE/2019/11/24/98510015.1.jpg' /></div></div>
-                  <div className="divTableCell" ><Link href={{pathname:'/detailPage' , query:{postId:v.postId,nickName:v.userNickName,postFlag:'1001'}}} ><a>{isEmpty(v.title)}</a></Link><br/>
+                  <div className="divTableCell" ><Link href={{pathname:'/detailPage' , query:{postId:v.postId,nickName:v.userNickName,postFlag:'1001'}}} ><a>{isEmpty(v.title)} [{v.commentCount}]</a></Link><br/>
                   <LikeTwoTone twoToneColor="#1ba640"/> : {v.good} <DislikeTwoTone twoToneColor="#1ba640"/> : {v.bad}  <EyeOutlined color="red"/> : {v.hit}<br/>
                   <UserOutlined /> {isEmpty(v.userNickName)}   <FieldTimeOutlined /> {custumDateFormat(v.createdDate)}<br />
                   </div>

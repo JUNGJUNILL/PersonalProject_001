@@ -3,7 +3,7 @@ import {useCallback,useState,useEffect, useRef} from 'react';
 
 
 const Home = () =>{
-
+  console.log('home'); 
   const test = ()=>{
     //alert("??"); 
     console.log("???"); 

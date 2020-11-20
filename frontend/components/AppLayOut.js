@@ -1,8 +1,8 @@
 
 import {useCallback,useState,useEffect, useRef} from 'react'
 import Link from 'next/link'
-import {Row,Col} from  'antd'; 
-import { Result, Icon, WhiteSpace,Button } from 'antd-mobile';
+import {Row,Col,Button} from  'antd'; 
+import { Result, Icon, WhiteSpace } from 'antd-mobile';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router'; 
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import PropTypes from 'prop-types'
 import { LOAD_USER_REQUEST,
          LOGOUT_REQUEST,
 } from '../reducers/auth';
+
 
 import wrapper from '../store/configureStore';
 
@@ -69,6 +70,9 @@ const AppLayOut = ({children}) =>{
                     {  <li className="navli"><Link href={{pathname:'/mainPosts_1001',query:{nowPage:1}}} ><a>메인1001</a></Link></li> }
                     
                     {userInfo &&   <li className="navli" onClick={logOut} >로그아웃</li>}
+                    {<li className="navli"><Link href={'/test'} ><a>test</a></Link></li>    } 
+                    {<li className="navli"><Link href={'/useCallback'} ><a>useCallback</a></Link></li>    } 
+                    {<li className="navli"><Link href={'/useEffect'} ><a>useEffect</a></Link></li>    }     
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>
