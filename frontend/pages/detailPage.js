@@ -7,7 +7,8 @@ import
     {MAINPOSTS_1001_DETAIL_INFO_REQUEST,
      MAINPOSTS_1001_COMMENTS_REQUEST, 
      MAINPOSTS_1001_COMMENTINSERT_REQUEST,
-     MAINPOSTS_1001_COMMENTLIKE_REQUEST
+     MAINPOSTS_1001_COMMENTLIKE_REQUEST,
+     MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST
     } 
 from '../reducers/mainPosts_1001'; 
 
@@ -22,16 +23,17 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
   const dispatch = useDispatch(); 
   const {mainPosts_1001Info , 
          mainPosts_1001Comments,
+         mainPosts_1001CommentByComments
         } = useSelector((state)=>state.mainPosts_1001); 
 
   const {userInfo}      = useSelector((state)=>state.auth);
-
+  const ref = createRef(); 
   const blank_pattern = /^\s+|\s+&/g;  
-  const [insertClick, setInsertClick] = useState(''); 
-
+  const [insertClick, setInsertClick] = useState('');
+  const [unfoldList,setUnfoldList] = useState('');  
 
   useEffect(()=>{
-  
+    
     //댓글 리스트 
     dispatch({
       type:MAINPOSTS_1001_COMMENTS_REQUEST, 
@@ -91,15 +93,14 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
     },[mainPosts_1001Comments]); 
 
 
-
-
   //댓글 입력 
   const insertComment = useCallback((postFlag,postId,nickName ,comment)=>{
     if(comment.length === 0 || comment.replace(blank_pattern,'')===""){
       
          
         alert('댓글을 입력해 주세요!'); 
-          return; 
+        ref.current.focus();  
+        return; 
         }
     
         if(comment.length === 300){
@@ -118,42 +119,36 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
               comment,
             }
         });
-        console.log('댓글 입력 후 ',mainPosts_1001Comments ); 
-        //setMainPosts_1001_commentsArray([...mainPosts_1001Comments]); 
-        //console.log('mainPosts_1001Comments=>' , mainPosts_1001Comments); 
-        //
-       
-       
-         //댓글 리스트 
-        //   dispatch({
-        //     type:MAINPOSTS_1001_COMMENTS_REQUEST, 
-        //     data:{
-          
-        //       postId,
-        //       nickName,
-        //       postFlag,
-        //       who:userInfo,
-        //     }
-        // }); 
-       // console.log('빠락스 비어 Array=>' , mainPosts_1001_commentsArray); 
-        // setMainPosts_1001_commentsArray([mainPosts_1001Comments[0],...mainPosts_1001_commentsArray]);
 
-       //
-
+        //clear the input 
+        setInsertClick('clicked')        
 
       },[mainPosts_1001Comments]);
 
 
 
+      //대댓글 리스트 
+      const commentByCommentList =useCallback((postFlag,nickName,postId,commentId,byCommentCount)=>{
 
 
+               if(byCommentCount > 0 ){
+      
+                
+                setUnfoldList('unfold'); 
+                dispatch({
+                    type:MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST,
+                    data:{
+                        postFlag,
+                        nickName,
+                        postId,
+                        commentId,
+                    }
+                });      
 
-
-
-  
-
-
-
+                }else{
+                    //setUnfoldList('333'); 
+                }
+      },[mainPosts_1001CommentByComments,unfoldList]); 
 
 
 
@@ -204,7 +199,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
 
 
 
-     {/*좋아요 싫어요 버튼--------------------------------------------------------------------------------*/}
+    {/*좋아요 싫어요 버튼--------------------------------------------------------------------------------*/}
     <div className='divTable'>
       <div className='divTableRowTh' style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
           <Button><LikeTwoTone  twoToneColor="#1ba640"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;<Button><DislikeTwoTone twoToneColor="#1ba640"/></Button>
@@ -224,6 +219,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
             userInfo={userInfo}
             insertComment={insertComment}
             insertClick={insertClick}
+            ref={ref}
    />
     {/*댓글 입력--------------------------------------------------------------------------------*/}
 
@@ -236,7 +232,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
       {mainPosts_1001Comments && mainPosts_1001Comments.map((v,i)=>
 
         <Comments1001 
-              key={i}
+              key={i} 
               postFlag={postFlag} 
               nickName={nickName} 
               postId={postId} 
@@ -255,6 +251,12 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
 
               clickedComponent={v.clickedComponent}
               likeDislikeflag={v.likeDislikeflag}
+              
+              byCommentCount={v.byCommentCount}
+              commentByCommentList={commentByCommentList}
+              mainPosts_1001CommentByComments={mainPosts_1001CommentByComments[0].commentId === v.commentId ? mainPosts_1001CommentByComments : ''}
+              unfoldList={unfoldList}
+
               />
       )
     

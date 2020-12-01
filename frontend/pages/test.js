@@ -1,10 +1,21 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState,useEffect,useRef ,memo, useCallback} from "react";
+import { useDispatch, useSelector } from 'react-redux';
+
 import Item from '../components/testComponent/Item'
 import CreateUser from '../components/testComponent/CreateUser'
 import UserList from '../components/testComponent/UserList'
+import 
+    {MAINPOSTS_1001_DETAIL_INFO_REQUEST,
+     MAINPOSTS_1001_COMMENTS_REQUEST, 
+     MAINPOSTS_1001_COMMENTINSERT_REQUEST,
+     MAINPOSTS_1001_COMMENTLIKE_REQUEST,
+     MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST
+    } 
+from '../reducers/mainPosts_1001'; 
+import { Badge } from 'antd';
 
 const Test = () =>{
-
+  /*
     const [numbers, setNumbers] = useState([1, 2, 3]);
     const [array, setArray] = useState([]); 
 
@@ -17,49 +28,51 @@ const Test = () =>{
         console.log('numbers=>' , numbers, 'array=>' , array); 
 
       };
+  */
+  //const { mainPosts_1001Comments, } = useSelector((state)=>state.mainPosts_1001); 
 
-      useEffect(()=>{
+ const dispatch = useDispatch(); 
 
-        setArray([...numbers]); 
-      },[]); 
 
-    // const updateArray = () =>{
+ const [a,setA] = useState(''); 
+ const [b,setB] = useState(''); 
+  // useEffect(()=>{
+  //  // 댓글 리스트 
+  //   // dispatch({
+  //   //   type:MAINPOSTS_1001_COMMENTS_REQUEST, 
+  //   //   data:{
+  //   //     postId:'10000001',
+  //   //     nickName:'2222',
+  //   //     postFlag:'1001',
+  //   //     who:'nick1111', 
+  //   //   }
+  //   // }); 
 
-    //   setArray([...numbers]); 
 
-    //   numbers.map((v,i)=>{
-    //     if(v===1){
-    //       array[i] = numbers[i]+1;  
-    //     }
-    //     if(v===2){
-    //       array[i] = numbers[i]+1;  
-    //     }
-    //     console.log('vv=>',v); 
-    //   })
+  //   setA('dddd'); 
+  //   // setB('DDDDDDDDDDDDDD'); 
 
-    //   setArray(prev => [...array]);
-
-    // }
-
+  // },[]); 
+  
+ console.log('hello world',a); 
 
     const [inputs, setInputs] =useState({username:'', email:'', }); 
-
+    const [count,setCount]= useState(0);
     
     const { username, email } = inputs;
 
-    const onChange = e =>{
+    // const onChange = e =>{
+    
+    // }
+
+    const onChange = useCallback((e)=>{
       const {name, value} = e.target; 
 
+      
       setInputs({
         ...inputs,[name]:value
       }); 
-    }
-
-
-
-
-
-
+    },[name])
 
     const [users, setUsers] = useState([
       {
@@ -80,7 +93,7 @@ const Test = () =>{
     ]);
   
     const nextId = useRef(4);
-    const onCreate = () => {
+    const onCreate = useCallback(() => {
       
       const user = {
         id: nextId.current,
@@ -88,7 +101,12 @@ const Test = () =>{
         email
       };
       
+      //추가된 데이터를 위로 올리기 
       setUsers([user,...users]);
+
+      //추가된 데이터를 아래로 올리기 
+      //setUsers([...users,user]);
+
 
       setInputs({
         username: '',
@@ -96,7 +114,7 @@ const Test = () =>{
       });
   
       nextId.current += 1;
-    };
+    },[]);
     
 
     return (
@@ -106,8 +124,10 @@ const Test = () =>{
             email={email}
             onChange={onChange}
             onCreate={onCreate}
-          />
-          <UserList users={users} />
+            array={users}
+          /><br />
+          {count}
+          <button onClick={()=>setCount(count+1)}>click</button>
       </div>
     )
 

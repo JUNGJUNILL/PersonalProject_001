@@ -150,6 +150,51 @@ router.post('/mainPosts_1001CommentInsert', async (req,res,next)=>{
 
 
 }); 
++
+//게시글 대댓글 INSERT
+router.post('/mainPosts_1001CommentByCommentInsert', async (req,res,next)=>{
+
+
+    try{
+
+        const { postFlag,
+                nickName,
+                postId,
+                commentId,
+                who,
+                comment,}= req.body.data; 
+        
+
+        let stringQuery = 'CALL US_INSERT_mainPostsCommentByComments'; 
+        stringQuery =stringQuery.concat(`('${postFlag}',`);
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${commentId}',`); 
+        stringQuery =stringQuery.concat(`'${who}',`); 
+        stringQuery =stringQuery.concat(`'${comment}')`);
+        await pool.query(stringQuery); 
+    
+        stringQuery=''; 
+        stringQuery = 'CALL US_SELECT_mainPostCommentByComments'; 
+        stringQuery =stringQuery.concat(`('${postFlag}',`);
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${commentId}')`);
+
+
+        const mainPosts_1001CommentByCommentInsert = await pool.query(stringQuery); 
+        console.log(stringQuery); 
+        return res.json(mainPosts_1001CommentByCommentInsert[0]); 
+
+
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+    }
+
+
+}); 
 
 
 //게시글 댓글 LIKE / DISLIKE 
@@ -176,7 +221,7 @@ router.post('/mainPosts_1001CommentLike', async (req,res,next)=>{
         stringQuery =stringQuery.concat(`'${who}')`);
         console.log('stringQuery==>' , stringQuery); 
         const mainPosts_1001CommentLike = await pool.query(stringQuery); 
-        console.log('플레그=>' , mainPosts_1001CommentLike[0][0].flag); 
+
         if(mainPosts_1001CommentLike[0][0].flag=== "N"){
             stringQuery=''; 
             stringQuery = 'CALL US_INSERT_mainPostCommentsLikeDislike ';
@@ -202,6 +247,40 @@ router.post('/mainPosts_1001CommentLike', async (req,res,next)=>{
 
 
 }); 
+
+
+//게시글 대댓글 리스트
+router.post('/mainPosts_1001CommentByComments', async (req,res,next)=>{
+
+        try{
+
+            const {
+
+                postFlag,
+                nickName,
+                postId,
+                commentId,
+
+            } = req.body.data; 
+
+            let stringQuery = 'CALL US_SELECT_mainPostCommentByComments '; 
+            stringQuery =stringQuery.concat(`('${postFlag}',`);
+            stringQuery =stringQuery.concat(`'${nickName}',`); 
+            stringQuery =stringQuery.concat(`'${postId}',`); 
+            stringQuery =stringQuery.concat(`'${commentId}')`);
+
+
+            const mainPosts_1001CommentByComment = await pool.query(stringQuery); 
+            console.log(stringQuery); 
+            return res.json(mainPosts_1001CommentByComment[0]); 
+            
+        }catch(e){
+            console.log(e); 
+            next(e); 
+        }
+
+}); 
+
 
 
 

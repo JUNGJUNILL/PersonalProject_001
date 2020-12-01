@@ -1,33 +1,18 @@
-import React, {useState, useMemo, useCallback,useRef ,current} from 'react'
+// 렌더되는 Child 컴포넌트의 수 만큼 인라인 함수가 생성된다. 
+const Child = ({onClick}) => {
+  return <button onClick={onClick}>Click Me!</button>
+};
 
+const Root = () => {
+  return (
+    <div>
+      <Child onClick={() => console.log('callback')}/> 
+      <Child onClick={() => console.log('callback')}/> 
+      <Child onClick={() => console.log('callback')}/> 
+      <Child onClick={() => console.log('callback')}/> 
+      <Child onClick={() => console.log('callback')}/> 
+    </div>
+  );
+};
 
-
-
-const Test2 = () =>{
-    console.log('ComponentTest2'); 
-    const [value, setValue] = useState(0);
-    const handleClick = useCallback(()=>{ 
-
-        console.log('clicked!',value)},[value])
-
-    const nomal = ()=>{
-        console.log('nomal btn' , value); 
-    }
-
-       return (
-
-        <div>
-        <p>
-          현재 카운터 값은 <b>{value}</b> 입니다.
-        </p>
-        <button onClick={() => setValue(value + 1)}>+1</button>
-        <button onClick={() => setValue(value - 1)}>-1</button>
-        <button onClick={handleClick} >useCallback</button>
-        <button onClick={nomal} >그냥버튼</button>
-      </div>
-    )
-
-}
-
-
-export default Test2; 
+export default Root;

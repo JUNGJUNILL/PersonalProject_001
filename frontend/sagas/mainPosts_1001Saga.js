@@ -21,6 +21,14 @@ import
         MAINPOSTS_1001_COMMENTLIKE_REQUEST,
         MAINPOSTS_1001_COMMENTLIKE_SUCCESS,
         MAINPOSTS_1001_COMMENTLIKE_FAILURE,
+        
+        MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST,
+        MAINPOSTS_1001_COMMENTBYCOMMENT_SUCCESS,
+        MAINPOSTS_1001_COMMENTBYCOMMENT_FAILURE,
+
+        MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_REQUEST,
+        MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_SUCCESS,
+        MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_FAILURE
 
     } 
 from '../reducers/mainPosts_1001'; 
@@ -37,6 +45,7 @@ function* sagaMainPosts_1001List(action){
 
     try{
       const result = yield call(APImainPosts_1001List,action.data);  
+
       yield  put({
             type:MAINPOSTS_1001_LIST_SUCCESS, 
             data:result.data,
@@ -128,6 +137,44 @@ function* watchMainPosts_1001CommentList(){
 //-----------------------------------------------------------------------------------
 
 
+//mainPost_1001 상세 정보 대댓글 리스트
+//-----------------------------------------------------------------------------------
+
+function APImainPosts_1001CommentByCommentList(data){
+    return axios.post('/mainPosts_1001/mainPosts_1001CommentByComments',{data},{withCredentials:true})
+}
+
+
+function* sagaMainPosts_1001CommentByCommentList(action){
+
+    try{
+      const result = yield call(APImainPosts_1001CommentByCommentList,action.data); 
+
+      yield  put({
+            type:MAINPOSTS_1001_COMMENTBYCOMMENT_SUCCESS, 
+            data:{array:result.data, param:action.data},
+        });
+
+    }catch(e){
+
+        console.error(e); 
+        alert('error', e); 
+        yield put({
+            type:MAINPOSTS_1001_COMMENTBYCOMMENT_FAILURE, 
+            error: e, 
+        }); 
+    }
+}
+
+
+function* watchMainPosts_1001CommentByCommentList(){
+    yield takeLatest(MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST,sagaMainPosts_1001CommentByCommentList); 
+}
+//-----------------------------------------------------------------------------------
+
+
+
+
 
 
 //mainPost_1001 댓글 입력
@@ -170,6 +217,42 @@ function* watchMainPosts_1001CommentInsert(){
 }
 //-----------------------------------------------------------------------------------
 
+//mainPost_1001 대댓글 입력
+//-----------------------------------------------------------------------------------
+function APImainPosts_1001CommentByCommentInsert(data){
+    return axios.post('/mainPosts_1001/mainPosts_1001CommentByCommentInsert',{data},{withCredentials:true})
+}
+
+
+function* sagaMainPosts_1001CommentByCommentInsert(action){
+
+    try{
+      const result = yield call(APImainPosts_1001CommentByCommentInsert,action.data); 
+
+      yield  put({
+            type:MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_SUCCESS,
+            data:result.data,
+        });
+
+    }catch(e){
+
+        console.error(e); 
+        alert('error', e); 
+        yield put({
+            
+            type:MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_FAILURE, 
+            error: e, 
+        }); 
+    }
+}
+
+
+function* watchMainPosts_1001CommentByCommentInsert(){
+    yield takeLatest(MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_REQUEST,sagaMainPosts_1001CommentByCommentInsert); 
+}
+//-----------------------------------------------------------------------------------
+
+
 
 
 //mainPost_1001 댓글 LIKE / DISLIKE 
@@ -195,7 +278,9 @@ function* sagaMainPosts_1001CommentLike(action){
         
       yield  put({
             type:MAINPOSTS_1001_COMMENTLIKE_SUCCESS, 
-            data:action.data.mainPosts_1001Comments, 
+            //이런식으로도 리듀서에 데이터를 보낼 수 있다. 
+            //data:{array : action.data.mainPosts_1001Comments, values :action.data.commentid },
+            data:action.data.mainPosts_1001Comments,
         });
 
     }catch(e){
@@ -227,5 +312,7 @@ export default function* mainPosts_1001Saga(){
         fork(watchMainPosts_1001CommentList), 
         fork(watchMainPosts_1001CommentInsert), 
         fork(watchMainPosts_1001CommentLike), 
+        fork(watchMainPosts_1001CommentByCommentList), 
+        fork(watchMainPosts_1001CommentByCommentInsert), 
      ])
 }

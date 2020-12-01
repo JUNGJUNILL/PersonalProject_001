@@ -1,22 +1,17 @@
 
-import React, { useCallback,useEffect, useState, createRef } from 'react'
+import React, { memo,useCallback,useEffect, useState, createRef } from 'react'
 
 
 const UserList = ({users}) =>{
 
 
   const [array,setArray] = useState([]); 
-
+  const [aaa,setAaa] = useState([]); 
+  console.log('userList',array); 
   useEffect(()=>{
     setArray([...users]); 
   },[users])
 
-  console.log(users); 
-  // useEffect(()=>{
-  //   console.log(users); 
-  //   setArray([...users]); 
-  // },[])
-  
 
   return (
     <div>
@@ -24,9 +19,10 @@ const UserList = ({users}) =>{
       <div key={i}>아이디: {v.id}   || <b>{v.username}</b>({v.email})
       </div>
     ))}
+
     </div>
 
   )
 }
 
-export default UserList;
+export default memo(UserList);

@@ -129,6 +129,7 @@ http://www.daks.me/try.php?filename=trycss3_pagination5.php
   width: 100%;
   border-bottom: 1px soli d#a0a0a0;
 }
+
 div.divTableRow:hover {
 
   background-color: #d8d8d8;
@@ -142,6 +143,19 @@ div.divTableRow:hover {
   padding-bottom: 1%;
   padding-top: 1%;
   border-bottom: 1px solid #a0a0a0;
+  word-wrap: break-word;
+
+}
+
+.divTableCell02 {
+
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 1%;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  border-bottom: 1px solid #a0a0a0;
+   background-color: #eeecec;
   word-wrap: break-word;
 
 }

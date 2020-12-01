@@ -96,8 +96,8 @@ Project01_TodoList.propTypes = {
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); 
   const middlewares = [sagaMiddleware]; // 미들웨어들을 넣으면 된다.
-  
-  const enhancer = process.env.NODE_ENV === 'production'
+                                            //production
+  const enhancer = process.env.NODE_ENV === 'development'
     ? compose(applyMiddleware(...middlewares))
     : composeWithDevTools(applyMiddleware(...middlewares));
 

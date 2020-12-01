@@ -71,6 +71,8 @@ const AppLayOut = ({children}) =>{
                     
                     {userInfo &&   <li className="navli" onClick={logOut} >로그아웃</li>}
                     {<li className="navli"><Link href={'/test'} ><a>test</a></Link></li>    } 
+                    {<li className="navli"><Link href={'/test02'} ><a>memo</a></Link></li>    } 
+                    {<li className="navli"><Link href={'/movie'} ><a>movie</a></Link></li>    } 
                     {<li className="navli"><Link href={'/useCallback'} ><a>useCallback</a></Link></li>    } 
                     {<li className="navli"><Link href={'/useEffect'} ><a>useEffect</a></Link></li>    }     
                 </ul>

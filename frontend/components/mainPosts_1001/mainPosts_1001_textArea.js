@@ -1,17 +1,12 @@
-import React, { useCallback,useEffect, useState, createRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback,useEffect, useState, createRef ,forwardRef} from 'react'
 import {Button} from 'antd'
 
-import 
-    {
-     MAINPOSTS_1001_COMMENTINSERT_REQUEST,
-     MAINPOSTS_1001_COMMENTS_REQUEST
-    } 
-from '../../reducers/mainPosts_1001'; 
+//forwardRef
+//https://ko.reactjs.org/docs/react-api.html#reactforwardref
 
-const  CommentTextArea= ({postFlag,nickName,postId,userInfo,insertComment,insertClick}) =>{
+const  CommentTextArea= forwardRef(({postFlag,nickName,postId,userInfo,insertComment,insertClick} ,ref) =>{
 
-    const ref = createRef(); 
+   // const ref = createRef(); 
     const [comment, setComment] = useState(''); 
 
 
@@ -21,11 +16,7 @@ const  CommentTextArea= ({postFlag,nickName,postId,userInfo,insertComment,insert
       setComment(''); 
     }
 
-    if(insertClick ==='focus'){
-      ref.current.focus();  
-    }
   },[insertClick.length > 0 ]); 
-  
 
 
   //댓글 입력 textArea 
@@ -47,7 +38,7 @@ const  CommentTextArea= ({postFlag,nickName,postId,userInfo,insertComment,insert
 
 return (
     <>
-    <textarea  value={comment}  style={{width:"100%",height:"80px",marginTop:"3%"}} onChange={onChageComment} placeholder={ userInfo ? "댓글을 작성해 보세요!" : "로그인이 필요한 서비스 입니다."} readOnly={userInfo ? false : true}/>
+    <textarea  value={comment}  ref={ref} style={{width:"100%",height:"80px",marginTop:"3%"}} onChange={onChageComment} placeholder={ userInfo ? "댓글을 작성해 보세요!" : "로그인이 필요한 서비스 입니다."} readOnly={userInfo ? false : true}/>
    
     <div style={{margin:"1%",display:"block",float:"left"}}>
       {comment ? comment.length  : 0 } &#47; 300
@@ -62,6 +53,6 @@ return (
     </>
 )
 
-}
+})
 
 export default CommentTextArea; 

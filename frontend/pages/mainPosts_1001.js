@@ -7,6 +7,7 @@ import Pagenation from '../utilComponent/Pagenation'
 import {DislikeTwoTone,LikeTwoTone ,EyeOutlined, UserOutlined, FieldTimeOutlined, FolderTwoTone} from '@ant-design/icons'
 import 
     {MAINPOSTS_1001_LIST_REQUEST,
+     MAINPOSTS_1001_DETAIL_INFO_REQUEST
     } 
 from '../reducers/mainPosts_1001'; 
 
@@ -87,6 +88,7 @@ const mainPosts_1001 = ({pages,group})=>{
 
   //게시글 상세 페이지 
   const gotoDetail = useCallback((postId,userNickName,postFlag)=>{
+
     router.push({pathname:'/detailPage',
                  query:{postId,nickName:userNickName,postFlag},
               }); 

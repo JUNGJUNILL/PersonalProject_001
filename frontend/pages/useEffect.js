@@ -3,7 +3,7 @@ import React, {useState, useMemo, useEffect,useCallback,useRef ,current} from 'r
 const Info = () => {
     const [name, setName] = useState('');
     const [nickname, setNickname] = useState('');
-  
+    console.log('첫로드'); 
     //useEffect는 기본적으로 렌더링 되고난 직후마다 실행되며,
     //두번째 파라미터 배열에 무엇을 넣는냐에 따라 실행되는 조건이 달라집니다. 
     useEffect(() => {
@@ -12,8 +12,8 @@ const Info = () => {
           name,
           nickname
         });
-
-      },[name]);
+        //setNickname('setNickname'); 
+      },[]);
          //▲첫 마운트, name state만 변경 될 때 실행된다.
          
 
@@ -22,12 +22,14 @@ const Info = () => {
     //뒷정리 함수는 바뀌기 직전 값을 반환해 준다.
     // useEffect(() => {
     //     console.log('effect');
-    //     console.log(name);
+    //     console.log('effect=>',name);
     //     return () => {
+
+    //       //바뀌기 직전값이 저장되어 있음.
     //       console.log('cleanup');
-    //       console.log(name);
+    //       console.log('clean=>' , name);
     //     };
-    //   });
+    //   },[name]);
 
 
     const onChangeName = e => {
