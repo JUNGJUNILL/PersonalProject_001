@@ -1,9 +1,8 @@
-import React,{useState,useCallback,useEffect} from 'react'
+import React,{useState,useCallback,useEffect,memo} from 'react'
 import { number } from 'prop-types';
 import Link from 'next/link'
 
 const Pagenation = ({pagenate,dataLength,postsPerPage,nowPage,groupPage,groupPageArray}) =>{
-
 
     const  pageNumers= []; 
 
@@ -65,4 +64,4 @@ const Pagenation = ({pagenate,dataLength,postsPerPage,nowPage,groupPage,groupPag
 
 }
 
-export default Pagenation; 
+export default memo(Pagenation); 

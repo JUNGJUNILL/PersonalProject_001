@@ -75,6 +75,7 @@ const AppLayOut = ({children}) =>{
                     {<li className="navli"><Link href={'/movie'} ><a>movie</a></Link></li>    } 
                     {<li className="navli"><Link href={'/useCallback'} ><a>useCallback</a></Link></li>    } 
                     {<li className="navli"><Link href={'/useEffect'} ><a>useEffect</a></Link></li>    }     
+                    {<li className="navli"><Link href={'/inputBoxParent'} ><a>inputBoxParent</a></Link></li>    }     
                 </ul>
                 
             <div className="sidenav" style={{width : isClicked? "40%":"0"}}>

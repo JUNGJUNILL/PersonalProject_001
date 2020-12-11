@@ -97,7 +97,7 @@ const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); 
   const middlewares = [sagaMiddleware]; // 미들웨어들을 넣으면 된다.
                                             //production
-  const enhancer = process.env.NODE_ENV === 'development'
+  const enhancer = process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(...middlewares))
     : composeWithDevTools(applyMiddleware(...middlewares));
 

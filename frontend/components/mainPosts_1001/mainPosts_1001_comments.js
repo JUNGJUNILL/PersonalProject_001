@@ -9,9 +9,9 @@ import {DislikeTwoTone,LikeTwoTone} from '@ant-design/icons'
 import 
     {
         MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_REQUEST,
+        MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_REQUEST,
     } 
 from '../../reducers/mainPosts_1001'; 
-import { Badge } from 'antd';
 
 const Comments1001 = ({
                       postFlag,
@@ -40,23 +40,32 @@ const Comments1001 = ({
                     })=>{
                 
                         
-        const dispatch = useDispatch();
-        const {clickCommentId} = useSelector((state)=>state.mainPosts_1001); 
-        const ref = createRef(); 
-        const blank_pattern = /^\s+|\s+&/g;  
+  const dispatch = useDispatch();
+  const {clickCommentId,
+            commentByCommentCount,
+            commentByCommentInsertCommentId} = useSelector((state)=>state.mainPosts_1001); 
+  const ref = createRef(); 
+  const blank_pattern = /^\s+|\s+&/g;  
         
-    //대댓글 입력 
+  //대댓글 입력 
   const insertComment = useCallback((postFlag,postId,nickName ,comment)=>{
-   
-    if(comment.length === 0 || comment.replace(blank_pattern,'')===""){
-      
-         
-        alert('댓글을 입력해 주세요!'); 
-        ref.current.focus();  
-        return; 
+
+        if(comment.length === 0 || comment.replace(blank_pattern,'')===""){
+ 
+            alert('댓글을 입력해 주세요!'); 
+            if(ref.current){
+                ref.current.focusInput(); 
+            }
+            return; 
+
         }
 
-
+        if(comment.length === 300){
+            alert('300자 이상 입력 할 수 없습니다.'); 
+            return; 
+        }
+      
+        //대댓글 입력
         dispatch({
             type:MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_REQUEST, 
             data:{
@@ -67,20 +76,53 @@ const Comments1001 = ({
                 who:userInfo,
                 comment,   
             }
-        })
-      },[mainPosts_1001CommentByComments]);
+        }); 
+
+        //인풋 초기화, 포커스 
+        if(ref.current){
+                ref.current.clearInput(); 
+                ref.current.focusInput(); 
+        }
+
+      },[mainPosts_1001CommentByComments,ref,commentByCommentInsertCommentId,commentByCommentCount]);
 
 
+
+      //대댓글 좋아요, 싫어요 버든 
+      const commentByCommentLikeBtn =useCallback((byCommentId,flag,likeDislike)=>{
+            
+            if(flag==="Y"){
+                
+                alert('이미 좋아요! 싫어요! 했습니다.'); 
+                return; 
+        
+            }else{  
+                dispatch({
+                    type:MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_REQUEST,
+                    data:{
+                        byCommentId,
+                        commentId,
+                        postId,
+                        postFlag,
+                        nickName,
+                        who:userInfo,
+                        flag : likeDislike,
+                        mainPosts_1001CommentByComments:[...mainPosts_1001CommentByComments], 
+                    }
+                })
+            }
+
+            alert(`${likeDislike}`); 
+
+      },[mainPosts_1001CommentByComments])
 
     return (
         <>
                 <div  className='divTableRow' >
-                    <div  className="divTableCell">
-                   
+                    <div  className="divTableCell">        
                     <b>{who}</b> &nbsp; <small>{custumDateFormat(createdDate)}</small><br/>
                     {comment}<br />
-                    <a onClick={()=>commentByCommentList(postFlag,nickName,postId,commentId,byCommentCount)}>{byCommentCount === 0 ? `댓글달기` : `댓글[${byCommentCount}]` }</a> {commentId}
-                   
+                    <a onClick={()=>commentByCommentList(postFlag,nickName,postId,commentId,clickCommentId,unfoldList)}>{`댓글[${commentByCommentInsertCommentId===commentId ? commentByCommentCount : byCommentCount}]`   }</a> {commentId}          
                         <div  style={{marginTop:"1%",display:"block",float:"right"}}>
                             <LikeTwoTone onClick={()=>likeBtn(commentId,flag,'good')} twoToneColor={clickedComponent && likeDislikeflag==='good' ? "#ff0000" : "#1ba640"}/>{clickedComponent && likeDislikeflag==='good' ? parseInt(good)+1:good}
                             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -90,7 +132,9 @@ const Comments1001 = ({
                         </div> 
                     </div>
                 </div>  
-                {unfoldList ==='unfold' && clickCommentId === commentId && mainPosts_1001CommentByComments && mainPosts_1001CommentByComments.map((v,i)=>(
+
+                {/*대댓글 리스트*/}
+                {unfoldList ==='unfold' && commentId === clickCommentId && mainPosts_1001CommentByComments && mainPosts_1001CommentByComments.map((v,i)=>(
                     <Comment1001ByComments                  
                             key={i}
                             postFlag={postFlag}
@@ -105,19 +149,27 @@ const Comments1001 = ({
 
                             good={v.good}
                             bad={v.bad}
+                            flag={v.flag}
                             createdDate={v.createdDate}
+
+                            commentByCommentLikeBtn={commentByCommentLikeBtn}
+
+                            clickedComponent={v.clickedComponent}
+                            likeDislikeflag={v.likeDislikeflag}
                     />
                     
                 ))}
-               {unfoldList ==='unfold' && clickCommentId ===commentId && byCommentCount > 0 && 
+                
+               {/*대댓글 입력 창*/}
+               {unfoldList ==='unfold' && clickCommentId === commentId && byCommentCount >= 0 && 
                     <CommentTextArea   
-                                postFlag={postFlag} 
-                                nickName={nickName} 
-                                postId={postId} 
-                                userInfo={userInfo}
-                                insertComment={insertComment}
-                                insertClick={'good'}
-                                ref={ref}               
+                            postFlag={postFlag} 
+                            nickName={nickName} 
+                            postId={postId} 
+                            userInfo={userInfo}
+                            insertComment={insertComment}
+   
+                            ref={ref}           
                             />
                 }
         </>   

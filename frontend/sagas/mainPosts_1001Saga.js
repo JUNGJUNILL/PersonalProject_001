@@ -26,9 +26,17 @@ import
         MAINPOSTS_1001_COMMENTBYCOMMENT_SUCCESS,
         MAINPOSTS_1001_COMMENTBYCOMMENT_FAILURE,
 
+        MAINPOSTS_1001_MAINPOSTLIKE_REQUEST,
+        MAINPOSTS_1001_MAINPOSTLIKE_SUCCESS,
+        MAINPOSTS_1001_MAINPOSTLIKE_FAILURE,
+
         MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_REQUEST,
         MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_SUCCESS,
-        MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_FAILURE
+        MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_FAILURE, 
+
+        MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_REQUEST,
+        MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_SUCCESS,
+        MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_FAILURE,
 
     } 
 from '../reducers/mainPosts_1001'; 
@@ -149,7 +157,6 @@ function* sagaMainPosts_1001CommentByCommentList(action){
 
     try{
       const result = yield call(APImainPosts_1001CommentByCommentList,action.data); 
-
       yield  put({
             type:MAINPOSTS_1001_COMMENTBYCOMMENT_SUCCESS, 
             data:{array:result.data, param:action.data},
@@ -231,7 +238,7 @@ function* sagaMainPosts_1001CommentByCommentInsert(action){
 
       yield  put({
             type:MAINPOSTS_1001_COMMENTBYCOMMENTINSERT_SUCCESS,
-            data:result.data,
+            data:{array:result.data, param:action.data},
         });
 
     }catch(e){
@@ -252,6 +259,50 @@ function* watchMainPosts_1001CommentByCommentInsert(){
 }
 //-----------------------------------------------------------------------------------
 
+
+
+
+
+//게시글 LIKE / DISLIKE 
+//-----------------------------------------------------------------------------------
+function APImainPosts_1001Like(data){
+    return axios.post('/mainPosts_1001/mainPosts_1001Like',{data},{withCredentials:true})
+}
+
+
+function* sagaMainPosts_1001Like(action){
+
+    try{
+        const result = yield call(APImainPosts_1001Like,action.data); 
+        action.data.mainPosts_1001Info[0] = {...action.data.mainPosts_1001Info[0],
+                                                flag :'Y',
+                                                good : action.data.flag === 'good' ? parseInt(action.data.mainPosts_1001Info[0].good) + 1 : action.data.mainPosts_1001Info[0].good,
+                                                bad  : action.data.flag === 'bad'  ? parseInt(action.data.mainPosts_1001Info[0].bad)  + 1 : action.data.mainPosts_1001Info[0].bad,
+                                                clicked : action.data.flag === 'good' ? 'good' : 'bad',     
+                                            }
+      yield  put({
+            type:MAINPOSTS_1001_MAINPOSTLIKE_SUCCESS, 
+            //이런식으로도 리듀서에 데이터를 보낼 수 있다. 
+            //data:{array : action.data.mainPosts_1001Comments, values :action.data.commentid },
+            data:{array:action.data.mainPosts_1001Info},
+        });
+
+    }catch(e){
+
+        console.error(e); 
+        alert('error', e); 
+        yield put({
+            type:MAINPOSTS_1001_MAINPOSTLIKE_FAILURE, 
+            error: e, 
+        }); 
+    }
+}
+
+
+function* watchMainPosts_1001Like(){
+    yield takeLatest(MAINPOSTS_1001_MAINPOSTLIKE_REQUEST,sagaMainPosts_1001Like); 
+}
+//-----------------------------------------------------------------------------------
 
 
 
@@ -302,6 +353,53 @@ function* watchMainPosts_1001CommentLike(){
 
 
 
+//mainPost_1001 대댓글 LIKE / DISLIKE 
+//-----------------------------------------------------------------------------------
+function APImainPosts_1001CommentByCommentsLike(data){
+    return axios.post('/mainPosts_1001/mainPosts_1001CommentByCommentsLike',{data},{withCredentials:true})
+}
+
+
+function* sagaMainPosts_1001CommentByCommentsLike(action){
+
+    try{
+      const result = yield call(APImainPosts_1001CommentByCommentsLike,action.data); 
+     console.log('mainPosts_1001CommentByComments=>',action.data.mainPosts_1001CommentByComments); 
+        
+     action.data.mainPosts_1001CommentByComments.map((v,i)=>{
+        if(v.byCommentId === action.data.byCommentId){
+            action.data.mainPosts_1001CommentByComments[i] = {...action.data.mainPosts_1001CommentByComments[i],
+                                                                clickedComponent:action.data.byCommentId,
+                                                                flag:'Y',
+                                                                likeDislikeflag:action.data.flag,
+                                                                }
+        }
+     });
+
+
+      yield  put({
+            type:MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_SUCCESS, 
+            data:action.data.mainPosts_1001CommentByComments,
+        });
+
+    }catch(e){
+
+        console.error(e); 
+        alert('error', e); 
+        yield put({
+            type:MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_FAILURE, 
+            error: e, 
+        }); 
+    }
+}
+
+
+function* watchMainPosts_1001CommentByCommentsLike(){
+    yield takeLatest(MAINPOSTS_1001_COMMENTBYCOMMENTLIKE_REQUEST,sagaMainPosts_1001CommentByCommentsLike); 
+}
+//-----------------------------------------------------------------------------------
+
+
 
 
 export default function* mainPosts_1001Saga(){
@@ -314,5 +412,7 @@ export default function* mainPosts_1001Saga(){
         fork(watchMainPosts_1001CommentLike), 
         fork(watchMainPosts_1001CommentByCommentList), 
         fork(watchMainPosts_1001CommentByCommentInsert), 
+        fork(watchMainPosts_1001CommentByCommentsLike), 
+        fork(watchMainPosts_1001Like),
      ])
 }

@@ -38,7 +38,7 @@ router.post('/', async (req,res,next)=>{
 router.post('/mainPosts_1001Detail', async (req,res,next)=>{
 
     try{    
-        const {postId, nickName, postFlag}= req.body.data; 
+        const {postId, nickName, postFlag, who}= req.body.data; 
 
 
         //(쿠키가 없는 경우 게시글 정보로 쿠키생성)
@@ -62,7 +62,8 @@ router.post('/mainPosts_1001Detail', async (req,res,next)=>{
         let stringQuery = 'CALL US_SELECT_mainPostsDetail'; 
             stringQuery =stringQuery.concat(`('${postId}',`);
             stringQuery =stringQuery.concat(`'${nickName}',`); 
-            stringQuery =stringQuery.concat(`'${postFlag}')`);
+            stringQuery =stringQuery.concat(`'${postFlag}',`); 
+            stringQuery =stringQuery.concat(`'${who}')`);
 
         const mainPosts_1001Detail = await pool.query(stringQuery); 
         console.log(stringQuery); 
@@ -179,7 +180,8 @@ router.post('/mainPosts_1001CommentByCommentInsert', async (req,res,next)=>{
         stringQuery =stringQuery.concat(`('${postFlag}',`);
         stringQuery =stringQuery.concat(`'${nickName}',`); 
         stringQuery =stringQuery.concat(`'${postId}',`); 
-        stringQuery =stringQuery.concat(`'${commentId}')`);
+        stringQuery =stringQuery.concat(`'${commentId}',`); 
+        stringQuery =stringQuery.concat(`'${who}')`);
 
 
         const mainPosts_1001CommentByCommentInsert = await pool.query(stringQuery); 
@@ -197,9 +199,48 @@ router.post('/mainPosts_1001CommentByCommentInsert', async (req,res,next)=>{
 }); 
 
 
+
+//게시글 LIKE / DISLIKE 
+router.post('/mainPosts_1001Like', async (req,res,next)=>{
+
+    try{
+        const {
+                postId,
+                nickName,
+                postFlag,
+                who,
+                flag
+        } = req.body.data; 
+        let stringQuery = `SELECT mainpostLikeDislikeFlag('${postFlag}','${postId}','${nickName}','${who}')`;
+        const data = await pool.query(stringQuery); 
+        
+        if(data[0][Object.keys(data[0])] === 'N'){
+            stringQuery=''; 
+            stringQuery = 'CALL US_INSERT_mainPostsLikeDislike'
+            stringQuery =stringQuery.concat(`('${postId}',`);
+            stringQuery =stringQuery.concat(`'${nickName}',`); 
+            stringQuery =stringQuery.concat(`'${postFlag}',`); 
+            stringQuery =stringQuery.concat(`'${who}',`); 
+            stringQuery =stringQuery.concat(`'${flag}')`);
+            await pool.query(stringQuery); 
+    
+        }
+
+        
+        console.log(stringQuery); 
+        return res.json(postId); 
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+
+    }
+
+}); 
+
+
 //게시글 댓글 LIKE / DISLIKE 
 router.post('/mainPosts_1001CommentLike', async (req,res,next)=>{
-
 
     try{
 
@@ -260,14 +301,15 @@ router.post('/mainPosts_1001CommentByComments', async (req,res,next)=>{
                 nickName,
                 postId,
                 commentId,
-
+                who,
             } = req.body.data; 
 
             let stringQuery = 'CALL US_SELECT_mainPostCommentByComments '; 
             stringQuery =stringQuery.concat(`('${postFlag}',`);
             stringQuery =stringQuery.concat(`'${nickName}',`); 
             stringQuery =stringQuery.concat(`'${postId}',`); 
-            stringQuery =stringQuery.concat(`'${commentId}')`);
+            stringQuery =stringQuery.concat(`'${commentId}',`); 
+            stringQuery =stringQuery.concat(`'${who}')`);
 
 
             const mainPosts_1001CommentByComment = await pool.query(stringQuery); 
@@ -278,6 +320,57 @@ router.post('/mainPosts_1001CommentByComments', async (req,res,next)=>{
             console.log(e); 
             next(e); 
         }
+
+}); 
+
+
+
+
+//게시글 대댓글 LIKE / DISLIKE 
+router.post('/mainPosts_1001CommentByCommentsLike', async (req,res,next)=>{
+
+
+    try{
+
+        const { 
+                byCommentId,
+                commentId, 
+                postId,
+                postFlag,
+                nickName,
+                who,
+                flag,     
+                        }= req.body.data; 
+
+        let stringQuery = 'CALL US_SELECT_mainPostCommentByCommentsLikeDislike '; 
+        stringQuery =stringQuery.concat(`('${byCommentId}',`);
+        stringQuery =stringQuery.concat(`'${commentId}',`); 
+        stringQuery =stringQuery.concat(`'${postFlag}',`); 
+        stringQuery =stringQuery.concat(`'${postId}',`); 
+        stringQuery =stringQuery.concat(`'${nickName}',`); 
+        stringQuery =stringQuery.concat(`'${who}')`);
+        console.log('stringQuery==>' , stringQuery); 
+        const mainPosts_1001CommentByCommentsLike = await pool.query(stringQuery); 
+        if(mainPosts_1001CommentByCommentsLike[0][0].flag=== "N"){
+            stringQuery=''; 
+            stringQuery = 'CALL US_INSERT_mainPostCommentByCommentsLikeDislike ';
+            stringQuery =stringQuery.concat(`('${byCommentId}',`);
+            stringQuery =stringQuery.concat(`'${commentId}',`); 
+            stringQuery =stringQuery.concat(`'${postId}',`); 
+            stringQuery =stringQuery.concat(`'${postFlag}',`); 
+            stringQuery =stringQuery.concat(`'${nickName}',`); 
+            stringQuery =stringQuery.concat(`'${who}',`); 
+            stringQuery =stringQuery.concat(`'${flag}')`)
+            await pool.query(stringQuery); 
+        }
+
+        return res.json(byCommentId); 
+
+    }catch(e){
+        console.log(e); 
+        next(e); 
+    }
+
 
 }); 
 

@@ -33,7 +33,7 @@ const mainPosts_1001 = ({pages,group})=>{
 
   /*-------------------------------------------페이징 처리 로직 start-------------------------------------------------------*/
   const [nowPage,setNowPage] = useState(0);                       //현재 페이지
-  const [postsPerPage] = useState(2);                             //한 페이지당 list 수 
+  const [postsPerPage] = useState(10);                             //한 페이지당 list 수 
   const [groupPage , setGroupPage] = useState(5);                 //페이징 그룹 당 수  1~5 , 6~10 , 11~15 ... 5의 배수만 입력가능 
   const [nowGroupPageArray,setNowGroupPageArray] =useState([]);   //현재 페이징 그룹 배열
   
@@ -108,7 +108,7 @@ const mainPosts_1001 = ({pages,group})=>{
       <div className="divTable">
             {mainPosts_1001.map((v,i)=>(
                <div className='divTableRow' onClick={()=>gotoDetail(v.postId,v.userNickName,'1001',nowPage)}>
-                  <div className='divTableCell'><div className="divImageCell"><img src='https://dimg.donga.com/wps/NEWS/IMAGE/2019/11/24/98510015.1.jpg' /></div></div>
+                  <div className='divTableCell'><div className="divImageCell"><img src={v.content.indexOf(`<img src=`) !== -1 ? v.content.substr(v.content.indexOf(`<img src=`)+`<img src=`.length ,v.content.substring(v.content.indexOf(`<img src=`)+`<img src=`.length).indexOf('>')).split(`"`).join(''):`http://captainryan.gonetis.com:3095/noimages.gif`} /></div></div>
                   <div className="divTableCell" ><Link href={{pathname:'/detailPage' , query:{postId:v.postId,nickName:v.userNickName,postFlag:'1001'}}} ><a>{isEmpty(v.title)} [{v.commentCount}]</a></Link><br/>
                   <LikeTwoTone twoToneColor="#1ba640"/> : {v.good} <DislikeTwoTone twoToneColor="#1ba640"/> : {v.bad}  <EyeOutlined color="red"/> : {v.hit}<br/>
                   <UserOutlined /> {isEmpty(v.userNickName)}   <FieldTimeOutlined /> {custumDateFormat(v.createdDate)}<br />

@@ -1,22 +1,20 @@
-import React, { useCallback,useEffect, useState, createRef ,forwardRef} from 'react'
+import React, { useCallback,useEffect, useState, createRef ,forwardRef,useImperativeHandle} from 'react'
 import {Button} from 'antd'
 
 //forwardRef
 //https://ko.reactjs.org/docs/react-api.html#reactforwardref
 
-const  CommentTextArea= forwardRef(({postFlag,nickName,postId,userInfo,insertComment,insertClick} ,ref) =>{
+const  CommentTextArea= forwardRef(({postFlag,nickName,postId,userInfo,insertComment,unfoldList} ,ref) =>{
 
-   // const ref = createRef(); 
+    const focusRef = createRef(); 
     const [comment, setComment] = useState(''); 
 
-
-  useEffect(()=>{
-
-    if(insertClick ==='clicked'){
-      setComment(''); 
-    }
-
-  },[insertClick.length > 0 ]); 
+  
+  //input box clear , focus
+  useImperativeHandle(ref, () => ({
+    clearInput : () => setComment(''),
+    focusInput : () => focusRef.current.focus(),
+  }));
 
 
   //댓글 입력 textArea 
@@ -38,7 +36,8 @@ const  CommentTextArea= forwardRef(({postFlag,nickName,postId,userInfo,insertCom
 
 return (
     <>
-    <textarea  value={comment}  ref={ref} style={{width:"100%",height:"80px",marginTop:"3%"}} onChange={onChageComment} placeholder={ userInfo ? "댓글을 작성해 보세요!" : "로그인이 필요한 서비스 입니다."} readOnly={userInfo ? false : true}/>
+  
+    <textarea value={comment} ref={focusRef} style={{width:"100%",height:"80px",marginTop:"3%"}} onChange={onChageComment} placeholder={ userInfo ? "댓글을 작성해 보세요!" : "로그인이 필요한 서비스 입니다."} readOnly={userInfo ? false : true}/>
    
     <div style={{margin:"1%",display:"block",float:"left"}}>
       {comment ? comment.length  : 0 } &#47; 300
@@ -49,6 +48,9 @@ return (
             <Button type="primary" onClick={()=>insertComment(postFlag,postId,nickName,comment)}>댓글달기</Button>
         </div>
     }
+
+
+
 
     </>
 )

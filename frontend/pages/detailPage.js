@@ -8,7 +8,8 @@ import
      MAINPOSTS_1001_COMMENTS_REQUEST, 
      MAINPOSTS_1001_COMMENTINSERT_REQUEST,
      MAINPOSTS_1001_COMMENTLIKE_REQUEST,
-     MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST
+     MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST,
+     MAINPOSTS_1001_MAINPOSTLIKE_REQUEST
     } 
 from '../reducers/mainPosts_1001'; 
 
@@ -29,8 +30,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
   const {userInfo}      = useSelector((state)=>state.auth);
   const ref = createRef(); 
   const blank_pattern = /^\s+|\s+&/g;  
-  const [insertClick, setInsertClick] = useState('');
-  const [unfoldList,setUnfoldList] = useState('');  
+  const [unfoldList,setUnfoldList] = useState('fold'); 
 
   useEffect(()=>{
     
@@ -52,13 +52,45 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
             postId,
             nickName,
             postFlag,
+            who:userInfo,
           }
     });
 
   },[]);
 
+  //게시글 좋아요, 실어요 버튼
+  const postLikeBtn = useCallback((likeFlag)=>{
 
-  //좋아요, 싫어요 버튼 
+    if(!userInfo){
+      alert('로그인이 필요한 서비스 입니다.'); 
+      return;
+    }
+
+    if(mainPosts_1001Info[0].flag==='Y'){
+      
+      alert('이미 좋아요! 싫어요! 했습니다.');       
+      return; 
+    
+    }
+
+    //게시글 좋아요!
+    dispatch({
+            type:MAINPOSTS_1001_MAINPOSTLIKE_REQUEST,
+            data:{
+              postId,
+              nickName,
+              postFlag,
+              who: userInfo, 
+              flag:likeFlag, 
+              mainPosts_1001Info:[...mainPosts_1001Info], 
+            }
+    }); 
+  
+
+  },[mainPosts_1001Info])
+
+
+  //댓글 좋아요, 싫어요 버튼 
   const likeBtn =useCallback((commentid,flag,likeDislike)=>{
       if(!userInfo){
         alert('로그인이 필요한 서비스 입니다.'); 
@@ -99,7 +131,9 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
       
          
         alert('댓글을 입력해 주세요!'); 
-        ref.current.focus();  
+        if(ref.current){
+          ref.current.focusInput(); 
+        } 
         return; 
         }
     
@@ -108,6 +142,8 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
           return; 
         }
 
+        
+        
           //댓글 입력
           dispatch({
             type:MAINPOSTS_1001_COMMENTINSERT_REQUEST, 
@@ -120,21 +156,29 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
             }
         });
 
-        //clear the input 
-        setInsertClick('clicked')        
+        setUnfoldList('fold'); 
 
-      },[mainPosts_1001Comments]);
+
+         //인풋 초기화, 포커스 
+        if(ref.current){
+          ref.current.clearInput(); 
+          ref.current.focusInput(); 
+        }
+
+
+      },[mainPosts_1001Comments,ref]);
 
 
 
       //대댓글 리스트 
-      const commentByCommentList =useCallback((postFlag,nickName,postId,commentId,byCommentCount)=>{
+      const commentByCommentList =useCallback((postFlag,nickName,postId,commentId,clickCommentId,unfoldList)=>{
+               
+                if(unfoldList==='unfold' && commentId === clickCommentId){
+                  setUnfoldList('fold'); 
+                }else{
+                  setUnfoldList('unfold'); 
+                }
 
-
-               if(byCommentCount > 0 ){
-      
-                
-                setUnfoldList('unfold'); 
                 dispatch({
                     type:MAINPOSTS_1001_COMMENTBYCOMMENT_REQUEST,
                     data:{
@@ -142,15 +186,13 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
                         nickName,
                         postId,
                         commentId,
+                        who:userInfo,
                     }
                 });      
 
-                }else{
-                    //setUnfoldList('333'); 
-                }
+              
+               
       },[mainPosts_1001CommentByComments,unfoldList]); 
-
-
 
 
 
@@ -160,7 +202,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
     {/*상세 페이지 타이틀--------------------------------------------------------------------------------*/}
       <div className='divTable' style={{marginTop:'3%'}}>
             <div className='divTableRowTh'>
-                <div className='divTableCellTh'>{mainPosts_1001Info[0].title} [{mainPosts_1001Comments.length}]</div>
+                <div className='divTableCellTh'>{mainPosts_1001Info[0].title} [{mainPosts_1001Comments.length}]{mainPosts_1001Info[0].flag}</div>
            </div>
            <div className='divTableRow'>
                 <div className='divTableCell'>
@@ -202,7 +244,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
     {/*좋아요 싫어요 버튼--------------------------------------------------------------------------------*/}
     <div className='divTable'>
       <div className='divTableRowTh' style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-          <Button><LikeTwoTone  twoToneColor="#1ba640"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;<Button><DislikeTwoTone twoToneColor="#1ba640"/></Button>
+          <Button onClick={()=>postLikeBtn('good')}><LikeTwoTone  twoToneColor={mainPosts_1001Info[0].clicked === 'good' ? "#ff0000":"#1ba640"}/></Button>&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={()=>postLikeBtn('bad')}><DislikeTwoTone twoToneColor={mainPosts_1001Info[0].clicked ==='bad' ? "#ff0000":"#1ba640"}/></Button>
       </div>
     </div>
     {/*좋아요 싫어요 버튼--------------------------------------------------------------------------------*/}
@@ -218,7 +260,6 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
             postId={postId} 
             userInfo={userInfo}
             insertComment={insertComment}
-            insertClick={insertClick}
             ref={ref}
    />
     {/*댓글 입력--------------------------------------------------------------------------------*/}
@@ -254,7 +295,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
               
               byCommentCount={v.byCommentCount}
               commentByCommentList={commentByCommentList}
-              mainPosts_1001CommentByComments={mainPosts_1001CommentByComments[0].commentId === v.commentId ? mainPosts_1001CommentByComments : ''}
+              mainPosts_1001CommentByComments={mainPosts_1001CommentByComments[0] && mainPosts_1001CommentByComments[0].commentId === v.commentId ? mainPosts_1001CommentByComments : ''}
               unfoldList={unfoldList}
 
               />
