@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3001",
+    "dev": "next -p 3060",
     "bulid": "next build",
     "start": "next start"
   },
@@ -31,6 +31,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
+    "react-kakao-login": "^2.0.3",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",

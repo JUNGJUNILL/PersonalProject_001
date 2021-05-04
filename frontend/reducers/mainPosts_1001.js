@@ -3,7 +3,7 @@ import produce from 'immer'
 
 export const  initialState = {
 
-    
+    isWriting          : false, 
     mainPosts_1001     : [], 
     mainPosts_1001Info : [{}], 
                         //하 이것때매 몇시간을 날려 먹었는지.. 아크릴 새우님이 해결법을 알려주심
@@ -100,11 +100,12 @@ const reducer = (state = initialState, action) =>{
 //게시글 댓글 INSERT   
 //----------------------------------------
             case MAINPOSTS_1001_COMMENTINSERT_REQUEST: {
+                draft.isWriting = true;
                 break; 
             }
 
             case MAINPOSTS_1001_COMMENTINSERT_SUCCESS: {
-
+                draft.isWriting = false; 
                 draft.mainPosts_1001Comments.length=0; 
                 action.data.forEach((v,i)=>{
                     draft.mainPosts_1001Comments.push(v); 

@@ -1,5 +1,6 @@
 const passport = require('passport'); 
 const local    = require('./local'); 
+const kakaoLogin =require('./kakao'); 
 const pool = require('../DataBaseInfo');
 
 
@@ -15,8 +16,10 @@ module.exports = () =>{
     passport.deserializeUser( async(id,done)=>{
 
         try{
+            let type='kakao'; 
             let stringQuery = 'CALL US_SELECT_getUserInfo'; 
-            stringQuery = stringQuery.concat(`('${id}')`);
+            stringQuery = stringQuery.concat(`('${id}',`);
+            stringQuery = stringQuery.concat(`'${type}')`);
             const user = await pool.query(stringQuery); 
             delete user[0][0].password; 
             const userInfo =user[0][0];
@@ -29,5 +32,8 @@ module.exports = () =>{
     }); 
 
     local(); 
+
+    kakaoLogin(); 
+    
 
 }

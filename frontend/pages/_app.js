@@ -28,6 +28,8 @@ const Project01_TodoList = ({Component,pageProps}) =>{
             <div>
                 <Head>
                     <title>TodoList</title>
+                    
+                    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.16.2/antd.min.css"/>
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd-mobile/2.3.3/antd-mobile.css" integrity="sha256-uZbNsqglsHyapiY6Nlj8o9kAmliY/rWNCTqthjIHIXw=" crossorigin="anonymous" />
                 </Head>
@@ -56,7 +58,7 @@ Project01_TodoList.getInitialProps = async (context)=>{
   if(isServer){
    
     console.log('hello==>', axios.defaults.headers.Cookie); 
-
+   
   }
 
   //로그인 접속자
@@ -97,7 +99,7 @@ const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); 
   const middlewares = [sagaMiddleware]; // 미들웨어들을 넣으면 된다.
                                             //production
-  const enhancer = process.env.NODE_ENV === 'production'
+  const enhancer = process.env.NODE_ENV === 'development'
     ? compose(applyMiddleware(...middlewares))
     : composeWithDevTools(applyMiddleware(...middlewares));
 

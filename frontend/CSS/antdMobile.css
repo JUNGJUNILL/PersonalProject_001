@@ -1,11 +1,19 @@
 /*navBar*/
+A:link {text-decoration:none; color:#646464;}
+A:visited {text-decoration:none; color:#646464;}
+A:active {text-decoration:none; color:#646464;}
+
+
+
 .navul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   border: 1px solid #e7e7e7;
-  background-color: #f3f3f3;
+  background-color: #4CAF50;
+  font-family: "Segoe UI",Arial,sans-serif;
+  font-weight: bold;
 }
 
 
@@ -13,10 +21,12 @@
 .navli {
   float: left;
   display: block;
-  color: #666;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-family:"Segoe UI",Arial,sans-serif; 
+  font-weight: bold;
+  color: rgb(255, 255, 255);
 }
 /*navBar*/
 
@@ -226,7 +236,47 @@ img {
 
 
 
+/*footer css*/
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+
+}
+
 
 .ck-editor__editable {
   min-height: 400px;
+}
+
+
+
+
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
 }

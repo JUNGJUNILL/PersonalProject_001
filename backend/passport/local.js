@@ -14,8 +14,10 @@ module.exports = () =>{
     }, async (userId,password,done)=>{
 
         try{
+                let loginType='local'; 
                 let stringQuery = 'CALL US_SELECT_getUserInfo'; 
-                stringQuery = stringQuery.concat(`('${userId}')`);
+                stringQuery = stringQuery.concat(`('${userId}',`);
+                stringQuery = stringQuery.concat(`('${loginType}')`);
                 const user = await pool.query(stringQuery); 
                 if(!user){
                     return done(null,false,{reason:'존재하지 않는 사용자 입니다.'}); 

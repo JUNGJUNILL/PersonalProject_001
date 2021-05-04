@@ -1,5 +1,6 @@
 import React, { useCallback,useEffect, useState, createRef ,forwardRef,useImperativeHandle} from 'react'
 import {Button} from 'antd'
+import { useSelector } from 'react-redux';
 
 //forwardRef
 //https://ko.reactjs.org/docs/react-api.html#reactforwardref
@@ -9,6 +10,8 @@ const  CommentTextArea= forwardRef(({postFlag,nickName,postId,userInfo,insertCom
     const focusRef = createRef(); 
     const [comment, setComment] = useState(''); 
 
+    const {isWriting} = useSelector((state)=>state.mainPosts_1001); 
+    
   
   //input box clear , focus
   useImperativeHandle(ref, () => ({
@@ -45,7 +48,7 @@ return (
 
     {userInfo && 
         <div style={{margin:"1%",display:"block",float:"right"}}>
-            <Button type="primary" onClick={()=>insertComment(postFlag,postId,nickName,comment)}>댓글달기</Button>
+            <Button type="primary" loading={isWriting} onClick={()=>insertComment(postFlag,postId,nickName,comment)}>댓글달기</Button>
         </div>
     }
 

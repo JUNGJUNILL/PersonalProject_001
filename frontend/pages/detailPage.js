@@ -202,7 +202,7 @@ const detailPage  = ({nickName,postFlag,postId}) =>{
     {/*상세 페이지 타이틀--------------------------------------------------------------------------------*/}
       <div className='divTable' style={{marginTop:'3%'}}>
             <div className='divTableRowTh'>
-                <div className='divTableCellTh'>{mainPosts_1001Info[0].title} [{mainPosts_1001Comments.length}]{mainPosts_1001Info[0].flag}</div>
+                <div className='divTableCellTh'>{mainPosts_1001Info[0].title} [{mainPosts_1001Comments.length}]</div>
            </div>
            <div className='divTableRow'>
                 <div className='divTableCell'>

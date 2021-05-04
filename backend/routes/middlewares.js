@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken'); 
 
-
 exports.isLoggedIn = (req,res,next)=>{
 
   if(req.isAuthenticated()){
@@ -33,10 +32,12 @@ exports.vertifiyToken = (req,res,next) =>{
   try{
 
     
-    if(req.cookies[process.env.NOTLOGIN_COOKIE] && !req.cookies[process.env.COOKIE_SECRET]){
+    if(req.cookies[process.env.NOTLOGIN_COOKIE] && !req.cookies[process.env.COOKIE_SECRET] && !req.cookies[process.env.KAKAO_COOKIE]){
+      return next(); 
+    }else if(req.cookies[process.env.KAKAO_COOKIE]){
       return next(); 
     }
-    
+
 
     //쿠키에 저장된 토큰 유요성 검증 
     req.decoded = jwt.verify(req.cookies[process.env.COOKIE_SECRET],process.env.JWT_SECRET); 
