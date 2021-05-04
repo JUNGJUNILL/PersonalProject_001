@@ -19,7 +19,7 @@
     "@ckeditor/ckeditor5-upload": "^22.0.0",
     "antd": "^4.4.0",
     "antd-mobile": "^2.3.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "html-to-draftjs": "^1.5.0",
